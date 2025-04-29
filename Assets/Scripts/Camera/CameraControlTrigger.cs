@@ -21,7 +21,10 @@ public class CameraControlTrigger : MonoBehaviour
         {
             if (customInspecterObjects.panCameraOnContact)
             {
-                CameraManager.instance.PanCameraOnContact(customInspecterObjects.panDistance, customInspecterObjects.panTime, customInspecterObjects.panDirection, false);
+                CameraManager.instance.PanCameraOnContact(customInspecterObjects.panDistance, 
+                    customInspecterObjects.panTime, 
+                    customInspecterObjects.panDirection, 
+                    false);
             }
         }
     }
@@ -34,12 +37,17 @@ public class CameraControlTrigger : MonoBehaviour
 
             if (customInspecterObjects.swapCameras && customInspecterObjects.cameraOnLeft != null && customInspecterObjects.cameraOnRight != null)
             {
-                CameraManager.instance.SwapCamera(customInspecterObjects.cameraOnLeft, customInspecterObjects.cameraOnRight, exitDirection);
+                CameraManager.instance.SwapCamera(customInspecterObjects.cameraOnLeft, 
+                    customInspecterObjects.cameraOnRight, 
+                    exitDirection);
             }
 
             if (customInspecterObjects.panCameraOnContact)
             {
-                CameraManager.instance.PanCameraOnContact(customInspecterObjects.panDistance, customInspecterObjects.panTime, customInspecterObjects.panDirection, true);
+                CameraManager.instance.PanCameraOnContact(customInspecterObjects.panDistance, 
+                    customInspecterObjects.panTime, 
+                    customInspecterObjects.panDirection, 
+                    true);
             }
         }
     }
