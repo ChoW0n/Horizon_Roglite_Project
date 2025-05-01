@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     #region References
     [Header("References")]
-    public PlayerMovementStats MoveStats;
+    public PlayerSO PlayerSO;
     private PlayerWallSlide WallSlide;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
@@ -93,14 +93,14 @@ public class PlayerController : MonoBehaviour
         // 지면/공중 가속도에 따라 이동 처리
         if (_isGrounded)
         {
-            Move(MoveStats.GroundAcceleration, MoveStats.GroundDeceleration, InputManager.Movement);
+            Move(PlayerSO.GroundAcceleration, PlayerSO.GroundDeceleration, InputManager.Movement);
         }
         else
         {
             if (WallJump._useWallJumpMoveState)
-                Move(MoveStats.WallJumpMoveAcceleration, MoveStats.WallJumpMoveDeceleration, InputManager.Movement);
+                Move(PlayerSO.WallJumpMoveAcceleration, PlayerSO.WallJumpMoveDeceleration, InputManager.Movement);
             else
-                Move(MoveStats.AirAcceleration, MoveStats.AirDeceleration, InputManager.Movement);
+                Move(PlayerSO.AirAcceleration, PlayerSO.AirDeceleration, InputManager.Movement);
         }
 
         ApplyVelocity();
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
     private void ApplyVelocity()
     {
         if (!Dash._isDashing)
-            Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, -MoveStats.MaxFallSpeed, 50f);
+            Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, -PlayerSO.MaxFallSpeed, 50f);
         else
             Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, -50f, 50f);
 
@@ -118,15 +118,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        MoveStats.DrawRight = _isFacingRight;
+        PlayerSO.DrawRight = _isFacingRight;
 
-        if (MoveStats.ShowWalkJumpArc)
+        if (PlayerSO.ShowWalkJumpArc)
         {
-            DrawJumpArc(MoveStats.MaxWalkSpeed, Color.white);
+            DrawJumpArc(PlayerSO.MaxWalkSpeed, Color.white);
         }
-        else if (MoveStats.ShowRunJumpArc)
+        else if (PlayerSO.ShowRunJumpArc)
         {
-            DrawJumpArc(MoveStats.MaxRunSpeed, Color.red);
+            DrawJumpArc(PlayerSO.MaxRunSpeed, Color.red);
         }
     }
 
@@ -140,19 +140,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!Dash._isDashing)
         {
-            if (Mathf.Abs(moveInput.x) >= MoveStats.MoveThreshold)
+            if (Mathf.Abs(moveInput.x) >= PlayerSO.MoveThreshold)
             {
                 TurnCheck(moveInput);
 
                 float targetVelocity = 0f;
                 if (InputManager.RunIsHeld)
-                    targetVelocity = moveInput.x * MoveStats.MaxRunSpeed;
+                    targetVelocity = moveInput.x * PlayerSO.MaxRunSpeed;
                 else
-                    targetVelocity = moveInput.x * MoveStats.MaxWalkSpeed;
+                    targetVelocity = moveInput.x * PlayerSO.MaxWalkSpeed;
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration + Time.fixedDeltaTime);
             }
-            else if (Mathf.Abs(moveInput.x) < MoveStats.MoveThreshold)
+            else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold)
             {
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0f, deceleration + Time.fixedDeltaTime);
             }
@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
         if (!_isGrounded)
             _coyoteTimer -= Time.deltaTime;
         else
-            _coyoteTimer = MoveStats.JumpCoyoteTime;
+            _coyoteTimer = PlayerSO.JumpCoyoteTime;
 
         if (!WallJump.ShouldApplyPostWallJumpBuffer())
         {
@@ -228,9 +228,9 @@ public class PlayerController : MonoBehaviour
     public void IsGrounded()
     {
         Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _feetColl.bounds.min.y);
-        Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x, MoveStats.GroundDetectionRayLenght);
+        Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x, PlayerSO.GroundDetectionRayLenght);
 
-        _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, MoveStats.GroundDetectionRayLenght, MoveStats.GroundLayer);
+        _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, PlayerSO.GroundDetectionRayLenght, PlayerSO.GroundLayer);
         if (_groundHit.collider != null)
             _isGrounded = true;
         else
@@ -238,7 +238,7 @@ public class PlayerController : MonoBehaviour
 
         #region Debug Visualization
 
-        if (MoveStats.DebugShowIsGroundedBox)
+        if (PlayerSO.DebugShowIsGroundedBox)
         {
             Color rayColor;
             if (_isGrounded)
@@ -246,9 +246,9 @@ public class PlayerController : MonoBehaviour
             else
                 rayColor = Color.red;
 
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLenght, rayColor);
-            Debug.DrawRay(new Vector2(boxCastOrigin.x + boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLenght, rayColor);
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y - MoveStats.GroundDetectionRayLenght), Vector2.right * boxCastSize.x, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * PlayerSO.GroundDetectionRayLenght, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x + boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * PlayerSO.GroundDetectionRayLenght, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y - PlayerSO.GroundDetectionRayLenght), Vector2.right * boxCastSize.x, rayColor);
         }
 
         #endregion
@@ -260,9 +260,9 @@ public class PlayerController : MonoBehaviour
     public void BumpedHead()
     {
         Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _feetColl.bounds.max.y);
-        Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x * MoveStats.HeadWidth, MoveStats.HeadDetectionRayLenght);
+        Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x * PlayerSO.HeadWidth, PlayerSO.HeadDetectionRayLenght);
 
-        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, MoveStats.HeadDetectionRayLenght, MoveStats.GroundLayer);
+        _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, PlayerSO.HeadDetectionRayLenght, PlayerSO.GroundLayer);
         if (_headHit.collider != null)
             _bumpedHead = true;
         else
@@ -270,9 +270,9 @@ public class PlayerController : MonoBehaviour
 
         #region Debug Visualization
 
-        if (MoveStats.DebugShowHeadBumpBox)
+        if (PlayerSO.DebugShowHeadBumpBox)
         {
-            float headWidth = MoveStats.HeadWidth;
+            float headWidth = PlayerSO.HeadWidth;
 
             Color rayColor;
             if (_bumpedHead)
@@ -280,9 +280,9 @@ public class PlayerController : MonoBehaviour
             else
                 rayColor = Color.red;
 
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLenght, rayColor);
-            Debug.DrawRay(new Vector2(boxCastOrigin.x + (boxCastSize.x / 2) * headWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLenght, rayColor);
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y + MoveStats.HeadDetectionRayLenght), Vector2.right * boxCastSize.x * headWidth, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y), Vector2.up * PlayerSO.HeadDetectionRayLenght, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x + (boxCastSize.x / 2) * headWidth, boxCastOrigin.y), Vector2.up * PlayerSO.HeadDetectionRayLenght, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y + PlayerSO.HeadDetectionRayLenght), Vector2.right * boxCastSize.x * headWidth, rayColor);
         }
 
         #endregion
@@ -297,42 +297,42 @@ public class PlayerController : MonoBehaviour
         Vector2 previousPosition = startPosition;
 
         float speed = 0f;
-        if (MoveStats.DrawRight)
+        if (PlayerSO.DrawRight)
             speed = moveSpeed;
         else
             speed = -moveSpeed;
 
-        Vector2 velocity = new Vector2(speed, MoveStats.InitialJumpVelocity);
+        Vector2 velocity = new Vector2(speed, PlayerSO.InitialJumpVelocity);
         Gizmos.color = gizmoColor;
-        float timeStep = 2 * MoveStats.TimeTillJumpApex / MoveStats.ArcResolution;
+        float timeStep = 2 * PlayerSO.TimeTillJumpApex / PlayerSO.ArcResolution;
 
-        for (int i = 0; i < MoveStats.VisualizationSteps; i++)
+        for (int i = 0; i < PlayerSO.VisualizationSteps; i++)
         {
             float simulationtime = i * timeStep;
             Vector2 displacement, drawPoint;
 
-            if (simulationtime < MoveStats.TimeTillJumpApex)
+            if (simulationtime < PlayerSO.TimeTillJumpApex)
             {
-                displacement = velocity * simulationtime + 0.5f * new Vector2(0, MoveStats.Gravity) * simulationtime * simulationtime;
+                displacement = velocity * simulationtime + 0.5f * new Vector2(0, PlayerSO.Gravity) * simulationtime * simulationtime;
             }
-            else if (simulationtime < MoveStats.TimeTillJumpApex + MoveStats.ApexHangTime)
+            else if (simulationtime < PlayerSO.TimeTillJumpApex + PlayerSO.ApexHangTime)
             {
-                float apexTime = simulationtime - MoveStats.TimeTillJumpApex;
-                displacement = velocity * MoveStats.TimeTillJumpApex + 0.5f * new Vector2(0, MoveStats.Gravity) * MoveStats.TimeTillJumpApex * MoveStats.TimeTillJumpApex;
+                float apexTime = simulationtime - PlayerSO.TimeTillJumpApex;
+                displacement = velocity * PlayerSO.TimeTillJumpApex + 0.5f * new Vector2(0, PlayerSO.Gravity) * PlayerSO.TimeTillJumpApex * PlayerSO.TimeTillJumpApex;
                 displacement += new Vector2(speed, 0) * apexTime;
             }
             else
             {
-                float descendTime = simulationtime - (MoveStats.TimeTillJumpApex + MoveStats.ApexHangTime);
-                displacement = velocity * MoveStats.TimeTillJumpApex + 0.5f * new Vector2(0, MoveStats.Gravity) * MoveStats.TimeTillJumpApex * MoveStats.TimeTillJumpApex;
-                displacement += new Vector2(speed, 0) * MoveStats.ApexHangTime;
-                displacement += new Vector2(speed, 0) * descendTime + 0.5f * new Vector2(0, MoveStats.Gravity) * descendTime * descendTime;
+                float descendTime = simulationtime - (PlayerSO.TimeTillJumpApex + PlayerSO.ApexHangTime);
+                displacement = velocity * PlayerSO.TimeTillJumpApex + 0.5f * new Vector2(0, PlayerSO.Gravity) * PlayerSO.TimeTillJumpApex * PlayerSO.TimeTillJumpApex;
+                displacement += new Vector2(speed, 0) * PlayerSO.ApexHangTime;
+                displacement += new Vector2(speed, 0) * descendTime + 0.5f * new Vector2(0, PlayerSO.Gravity) * descendTime * descendTime;
             }
             drawPoint = startPosition + displacement;
 
-            if (MoveStats.StopOnCollision)
+            if (PlayerSO.StopOnCollision)
             {
-                RaycastHit2D hit = Physics2D.Raycast(previousPosition, drawPoint - previousPosition, Vector2.Distance(previousPosition, drawPoint), MoveStats.GroundLayer);
+                RaycastHit2D hit = Physics2D.Raycast(previousPosition, drawPoint - previousPosition, Vector2.Distance(previousPosition, drawPoint), PlayerSO.GroundLayer);
                 if (hit.collider != null)
                 {
                     Gizmos.DrawLine(previousPosition, hit.point);
@@ -355,12 +355,12 @@ public class PlayerController : MonoBehaviour
             originEndPoint = _bodyColl.bounds.max.x;
         else
             originEndPoint = _bodyColl.bounds.min.x;
-        float abjustedHeight = _bodyColl.bounds.size.y * MoveStats.WallDetectionRayHeightMultiplier;
+        float abjustedHeight = _bodyColl.bounds.size.y * PlayerSO.WallDetectionRayHeightMultiplier;
 
         Vector2 boxCastOrigin = new Vector2(originEndPoint, _bodyColl.bounds.center.y);
-        Vector2 boxCastSize = new Vector2(MoveStats.WallDetectionRayLenght, abjustedHeight);
+        Vector2 boxCastSize = new Vector2(PlayerSO.WallDetectionRayLenght, abjustedHeight);
 
-        _wallHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, transform.right, MoveStats.WallDetectionRayLenght, MoveStats.GroundLayer);
+        _wallHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, transform.right, PlayerSO.WallDetectionRayLenght, PlayerSO.GroundLayer);
         if (_wallHit.collider != null)
         {
             _lastWallHit = _wallHit;
@@ -371,7 +371,7 @@ public class PlayerController : MonoBehaviour
 
         #region Debug Visualization
 
-        if (MoveStats.DebugShowWallHitbox)
+        if (PlayerSO.DebugShowWallHitbox)
         {
             Color rayColor;
             if (_isTouchingWall)

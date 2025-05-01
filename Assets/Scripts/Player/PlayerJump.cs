@@ -56,7 +56,7 @@ public class PlayerJump : MonoBehaviour
             if (WallSlide._isWallSlideFalling && WallJump._wallJumpPostBufferTimer >= 0f) return;
             else if (WallSlide._isWallSliding || (Controller._isTouchingWall && !Controller._isGrounded)) return;
 
-            _jumpBufferTimer = Controller.MoveStats.JumpBufferTime;
+            _jumpBufferTimer = Controller.PlayerSO.JumpBufferTime;
             _jumpReleasedDuringBuffer = false;
         }
 
@@ -72,7 +72,7 @@ public class PlayerJump : MonoBehaviour
                 {
                     _isPastApexThreshold = false;
                     _isFastFalling = true;
-                    _fastFallTime = Controller.MoveStats.TimeForUpwardsCancel;
+                    _fastFallTime = Controller.PlayerSO.TimeForUpwardsCancel;
                     VerticalVelocity = 0f;
                 }
                 else
@@ -96,7 +96,7 @@ public class PlayerJump : MonoBehaviour
         }
         // 공중 점프 (다단점프)
         else if (_jumpBufferTimer > 0f && (_isJumping || WallJump._isWallJumping || WallSlide._isWallSlideFalling || Dash._isAirDashing || Dash._isDashFastFalling)
-            && !Controller._isTouchingWall && _numberOfJumpsUsed < Controller.MoveStats.NumberOfJumpsAllowed)
+            && !Controller._isTouchingWall && _numberOfJumpsUsed < Controller.PlayerSO.NumberOfJumpsAllowed)
         {
             _isFastFalling = false;
             InitiateJump(1);
@@ -105,7 +105,7 @@ public class PlayerJump : MonoBehaviour
                 Dash._isDashFastFalling = false;
         }
         // 낙하 중 추가 점프 (다단점프 예외)
-        else if (_jumpBufferTimer > 0f && _isFalling && !WallSlide._isWallSlideFalling && _numberOfJumpsUsed < Controller.MoveStats.NumberOfJumpsAllowed - 1)
+        else if (_jumpBufferTimer > 0f && _isFalling && !WallSlide._isWallSlideFalling && _numberOfJumpsUsed < Controller.PlayerSO.NumberOfJumpsAllowed - 1)
         {
             InitiateJump(2);
             _isFastFalling = false;
@@ -121,7 +121,7 @@ public class PlayerJump : MonoBehaviour
 
         _jumpBufferTimer = 0f;
         _numberOfJumpsUsed += numberOfJumpsUsed;
-        VerticalVelocity = Controller.MoveStats.InitialJumpVelocity;
+        VerticalVelocity = Controller.PlayerSO.InitialJumpVelocity;
     }
 
     /// <summary>
@@ -137,9 +137,9 @@ public class PlayerJump : MonoBehaviour
             if (VerticalVelocity >= 0f)
             {
                 // 점프 중간 지점 도달 판단
-                _apexPoint = Mathf.InverseLerp(Controller.MoveStats.InitialJumpVelocity, 0f, VerticalVelocity);
+                _apexPoint = Mathf.InverseLerp(Controller.PlayerSO.InitialJumpVelocity, 0f, VerticalVelocity);
 
-                if (_apexPoint > Controller.MoveStats.ApexThreshold)
+                if (_apexPoint > Controller.PlayerSO.ApexThreshold)
                 {
                     if (!_isPastApexThreshold)
                     {
@@ -150,7 +150,7 @@ public class PlayerJump : MonoBehaviour
                     if (_isPastApexThreshold)
                     {
                         _timePastApexThreshold += Time.fixedDeltaTime;
-                        if (_timePastApexThreshold < Controller.MoveStats.ApexHangTime)
+                        if (_timePastApexThreshold < Controller.PlayerSO.ApexHangTime)
                             VerticalVelocity = 0f;
                         else
                             VerticalVelocity = -0.01f;
@@ -158,14 +158,14 @@ public class PlayerJump : MonoBehaviour
                 }
                 else if (!_isFastFalling)
                 {
-                    VerticalVelocity += Controller.MoveStats.Gravity * Time.fixedDeltaTime;
+                    VerticalVelocity += Controller.PlayerSO.Gravity * Time.fixedDeltaTime;
                     if (_isPastApexThreshold)
                         _isPastApexThreshold = false;
                 }
             }
             else if (!_isFastFalling)
             {
-                VerticalVelocity += Controller.MoveStats.Gravity * Controller.MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                VerticalVelocity += Controller.PlayerSO.Gravity * Controller.PlayerSO.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
             else if (VerticalVelocity < 0f)
             {
@@ -177,10 +177,10 @@ public class PlayerJump : MonoBehaviour
         // 빠른 낙하 처리
         if (_isFastFalling)
         {
-            if (_fastFallTime >= Controller.MoveStats.TimeForUpwardsCancel)
-                VerticalVelocity += Controller.MoveStats.Gravity * Controller.MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
-            else if (_fastFallTime < Controller.MoveStats.TimeForUpwardsCancel)
-                VerticalVelocity = Mathf.Lerp(_fastFallReleaseSpeed, 0f, (_fastFallTime / Controller.MoveStats.TimeForUpwardsCancel));
+            if (_fastFallTime >= Controller.PlayerSO.TimeForUpwardsCancel)
+                VerticalVelocity += Controller.PlayerSO.Gravity * Controller.PlayerSO.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+            else if (_fastFallTime < Controller.PlayerSO.TimeForUpwardsCancel)
+                VerticalVelocity = Mathf.Lerp(_fastFallReleaseSpeed, 0f, (_fastFallTime / Controller.PlayerSO.TimeForUpwardsCancel));
 
             _fastFallTime += Time.fixedDeltaTime;
         }
@@ -223,7 +223,7 @@ public class PlayerJump : MonoBehaviour
             if (!_isFalling)
                 _isFalling = true;
 
-            VerticalVelocity += Controller.MoveStats.Gravity * Time.fixedDeltaTime;
+            VerticalVelocity += Controller.PlayerSO.Gravity * Time.fixedDeltaTime;
         }
     }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Player Movement")]
-public class PlayerMovementStats : ScriptableObject
+public class PlayerSO : ScriptableObject
 {
     // ---------------- 이동 속도 ----------------
     [Header("이동 속도")]

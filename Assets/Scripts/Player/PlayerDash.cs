@@ -43,7 +43,7 @@ public class PlayerDash : MonoBehaviour
                 InitiateDash(); // 대쉬 실행
             }
             // 공중에서 대쉬 가능 조건
-            else if (!Controller._isGrounded && !_isDashing && _numberOfDashesUsed < Controller.MoveStats.NumberOfDashes)
+            else if (!Controller._isGrounded && !_isDashing && _numberOfDashesUsed < Controller.PlayerSO.NumberOfDashes)
             {
                 _isAirDashing = true;   // 공중 대쉬 상태 설정
                 InitiateDash();         // 대쉬 실행
@@ -67,32 +67,32 @@ public class PlayerDash : MonoBehaviour
 
         // 가장 가까운 대쉬 방향
         Vector2 closestDirection = Vector2.zero;
-        float minDistance = Vector2.Distance(_dashDirection, Controller.MoveStats.DashDirections[0]);
+        float minDistance = Vector2.Distance(_dashDirection, Controller.PlayerSO.DashDirections[0]);
 
         // 가장 가까운 유효 대쉬 방향 찾기
-        for (int i = 0; i < Controller.MoveStats.DashDirections.Length; i++)
+        for (int i = 0; i < Controller.PlayerSO.DashDirections.Length; i++)
         {
             // 정확히 일치하는 방향이 있으면 바로 설정
-            if (_dashDirection == Controller.MoveStats.DashDirections[i])
+            if (_dashDirection == Controller.PlayerSO.DashDirections[i])
             {
                 closestDirection = _dashDirection;
                 break;
             }
 
-            float distance = Vector2.Distance(_dashDirection, Controller.MoveStats.DashDirections[i]);
+            float distance = Vector2.Distance(_dashDirection, Controller.PlayerSO.DashDirections[i]);
 
             // 대각선 방향일 경우 편향값을 적용
-            bool isDiagonal = (Mathf.Abs(Controller.MoveStats.DashDirections[i].x) == 1 && Mathf.Abs(Controller.MoveStats.DashDirections[i].y) == 1);
+            bool isDiagonal = (Mathf.Abs(Controller.PlayerSO.DashDirections[i].x) == 1 && Mathf.Abs(Controller.PlayerSO.DashDirections[i].y) == 1);
             if (isDiagonal)
             {
-                distance -= Controller.MoveStats.DashDiagonallyBias;
+                distance -= Controller.PlayerSO.DashDiagonallyBias;
             }
 
             // 가장 가까운 방향 갱신
             else if (distance < minDistance)
             {
                 minDistance = distance;
-                closestDirection = Controller.MoveStats.DashDirections[i];
+                closestDirection = Controller.PlayerSO.DashDirections[i];
             }
         }
 
@@ -110,7 +110,7 @@ public class PlayerDash : MonoBehaviour
         _numberOfDashesUsed++;
         _isDashing = true;
         _dashTimer = 0f;
-        _dashOnGroundTimer = Controller.MoveStats.TimeBtwDashesOnGround;
+        _dashOnGroundTimer = Controller.PlayerSO.TimeBtwDashesOnGround;
 
         // 점프 및 벽 점프 관련 상태 초기화
         Jump.ResetJumpvalues();
@@ -127,7 +127,7 @@ public class PlayerDash : MonoBehaviour
             _dashTimer += Time.fixedDeltaTime;
 
             // 대쉬 시간 종료 시
-            if (_dashTimer >= Controller.MoveStats.DashTime)
+            if (_dashTimer >= Controller.PlayerSO.DashTime)
             {
                 // 지상에서 대쉬를 끝낸 경우 대쉬 횟수 리셋
                 if (Controller._isGrounded)
@@ -150,10 +150,10 @@ public class PlayerDash : MonoBehaviour
             }
 
             // 대쉬 방향에 따라 속도 적용
-            Controller.HorizontalVelocity = Controller.MoveStats.DashSpeed * _dashDirection.x;
+            Controller.HorizontalVelocity = Controller.PlayerSO.DashSpeed * _dashDirection.x;
 
             if (_dashDirection.y != 0f || _isAirDashing)
-                Jump.VerticalVelocity = Controller.MoveStats.DashSpeed * _dashDirection.y;
+                Jump.VerticalVelocity = Controller.PlayerSO.DashSpeed * _dashDirection.y;
         }
         // 대쉬 후 빠른 낙하 처리
         else if (_isDashFastFalling)
@@ -161,14 +161,14 @@ public class PlayerDash : MonoBehaviour
             if (Jump.VerticalVelocity > 0f)
             {
                 // 위로 상승 중인 경우 → 일정 시간까지 천천히 멈춤
-                if (_dashFastFallTime < Controller.MoveStats.DashTimeForUpwardsCancel)
+                if (_dashFastFallTime < Controller.PlayerSO.DashTimeForUpwardsCancel)
                 {
-                    Jump.VerticalVelocity = Mathf.Lerp(_dashFastFallReleaseSpeed, 0f, (_dashFastFallTime / Controller.MoveStats.DashTimeForUpwardsCancel));
+                    Jump.VerticalVelocity = Mathf.Lerp(_dashFastFallReleaseSpeed, 0f, (_dashFastFallTime / Controller.PlayerSO.DashTimeForUpwardsCancel));
                 }
                 // 이후에는 중력에 따라 낙하
                 else
                 {
-                    Jump.VerticalVelocity += Controller.MoveStats.Gravity * Controller.MoveStats.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                    Jump.VerticalVelocity += Controller.PlayerSO.Gravity * Controller.PlayerSO.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime;
                 }
 
                 _dashFastFallTime += Time.fixedDeltaTime;
@@ -176,7 +176,7 @@ public class PlayerDash : MonoBehaviour
             else
             {
                 // 낙하 중일 경우 중력 가속
-                Jump.VerticalVelocity += Controller.MoveStats.Gravity * Controller.MoveStats.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                Jump.VerticalVelocity += Controller.PlayerSO.Gravity * Controller.PlayerSO.DashGravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
         }
     }

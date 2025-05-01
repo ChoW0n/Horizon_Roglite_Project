@@ -38,7 +38,7 @@ public class PlayerWallSlide : MonoBehaviour
                 Dash.ResetDashValues();          // 대쉬 상태 초기화
 
                 // 설정에 따라 벽 슬라이드 시 대쉬 횟수 리셋
-                if (Controller.MoveStats.ResetDashOnWallSlide)
+                if (Controller.PlayerSO.ResetDashOnWallSlide)
                 {
                     Dash.ResetDashes();
                 }
@@ -47,7 +47,7 @@ public class PlayerWallSlide : MonoBehaviour
                 _isWallSliding = true;          // 벽 슬라이드 시작
 
                 // 설정에 따라 점프 횟수도 리셋
-                if (Controller.MoveStats.ResetJumpsOnWallSlide)
+                if (Controller.PlayerSO.ResetJumpsOnWallSlide)
                     Jump._numberOfJumpsUsed = 0;
             }
         }
@@ -82,8 +82,8 @@ public class PlayerWallSlide : MonoBehaviour
             // 점진적으로 목표 슬라이드 속도로 보간하며 낙하
             Jump.VerticalVelocity = Mathf.Lerp(
                 Jump.VerticalVelocity,
-                -Controller.MoveStats.WallSlideSpeed,
-                Controller.MoveStats.WallSlideDecelerationSpeed * Time.fixedDeltaTime
+                -Controller.PlayerSO.WallSlideSpeed,
+                Controller.PlayerSO.WallSlideDecelerationSpeed * Time.fixedDeltaTime
             );
         }
     }

@@ -36,7 +36,7 @@ public class PlayerWallJump : MonoBehaviour
     {
         // 벽 점프 버퍼 조건 만족 시 타이머 초기화
         if (ShouldApplyPostWallJumpBuffer())
-            _wallJumpPostBufferTimer = Controller.MoveStats.WallJumpPostBufferTime;
+            _wallJumpPostBufferTimer = Controller.PlayerSO.WallJumpPostBufferTime;
 
         // 점프 버튼을 뗐고, 벽을 타지 않고 있으며, 벽 점프 중이라면
         if (InputManager.JumpWasReleased && !WallSlide._isWallSliding && !Controller._isTouchingWall && _isWallJumping)
@@ -47,7 +47,7 @@ public class PlayerWallJump : MonoBehaviour
                 {
                     _isPastWallJumpApexThreshold = false;
                     _isWallJumpFastFalling = true;
-                    _wallJumpFastFallTime = Controller.MoveStats.TimeForUpwardsCancel;
+                    _wallJumpFastFallTime = Controller.PlayerSO.TimeForUpwardsCancel;
 
                     Jump.VerticalVelocity = 0f; // 상승 멈추고 낙하 시작
                 }
@@ -79,7 +79,7 @@ public class PlayerWallJump : MonoBehaviour
         Jump.ResetJumpvalues();      // 점프 관련 값 초기화
         _wallJumpTime = 0f;     // 벽 점프 시간 초기화
 
-        Jump.VerticalVelocity = Controller.MoveStats.InitialWallJumpVelocity; // 초기 수직 속도 설정
+        Jump.VerticalVelocity = Controller.PlayerSO.InitialWallJumpVelocity; // 초기 수직 속도 설정
 
         int dirMultiplier = 0;
         Vector2 hitPoint = Controller._lastWallHit.collider.ClosestPoint(Controller._bodyColl.bounds.center);
@@ -90,7 +90,7 @@ public class PlayerWallJump : MonoBehaviour
         else
             dirMultiplier = 1;
 
-        Controller.HorizontalVelocity = Mathf.Abs(Controller.MoveStats.WallJumpDirection.x) * dirMultiplier;
+        Controller.HorizontalVelocity = Mathf.Abs(Controller.PlayerSO.WallJumpDirection.x) * dirMultiplier;
     }
 
     // 벽 점프 도중 물리 처리
@@ -101,7 +101,7 @@ public class PlayerWallJump : MonoBehaviour
             _wallJumpTime += Time.fixedDeltaTime;
 
             // 점프 정점 도달 시간 이후엔 벽 점프 상태 해제
-            if (_wallJumpTime >= Controller.MoveStats.TimeTillJumpApex)
+            if (_wallJumpTime >= Controller.PlayerSO.TimeTillJumpApex)
                 _useWallJumpMoveState = false;
 
             // 머리를 부딪힌 경우 빠르게 낙하 시작
@@ -114,10 +114,10 @@ public class PlayerWallJump : MonoBehaviour
             if (Jump.VerticalVelocity >= 0f) // 상승 중
             {
                 // 현재 상승 속도로 점프 정점에 얼마나 가까운지 계산
-                _walljumpApexPoint = Mathf.InverseLerp(Controller.MoveStats.WallJumpDirection.y, 0f, Jump.VerticalVelocity);
+                _walljumpApexPoint = Mathf.InverseLerp(Controller.PlayerSO.WallJumpDirection.y, 0f, Jump.VerticalVelocity);
 
                 // 정점에 도달한 경우
-                if (_walljumpApexPoint > Controller.MoveStats.ApexThreshold)
+                if (_walljumpApexPoint > Controller.PlayerSO.ApexThreshold)
                 {
                     if (!_isPastWallJumpApexThreshold)
                     {
@@ -129,7 +129,7 @@ public class PlayerWallJump : MonoBehaviour
                     if (_isPastWallJumpApexThreshold)
                     {
                         _timePastWallJumpApexThreshold += Time.fixedDeltaTime;
-                        if (_timePastWallJumpApexThreshold < Controller.MoveStats.ApexHangTime)
+                        if (_timePastWallJumpApexThreshold < Controller.PlayerSO.ApexHangTime)
                             Jump.VerticalVelocity = 0f;
                         else
                             Jump.VerticalVelocity = -0.01f; // 정점 유지 시간이 끝났으면 느린 낙하 시작
@@ -138,7 +138,7 @@ public class PlayerWallJump : MonoBehaviour
                 else if (!_isWallJumpFastFalling)
                 {
                     // 정점 도달 전에는 벽 점프용 중력 적용
-                    Jump.VerticalVelocity += Controller.MoveStats.WallJumpGravity * Time.fixedDeltaTime;
+                    Jump.VerticalVelocity += Controller.PlayerSO.WallJumpGravity * Time.fixedDeltaTime;
 
                     // 정점 상태 초기화
                     if (_isPastWallJumpApexThreshold)
@@ -148,7 +148,7 @@ public class PlayerWallJump : MonoBehaviour
 
             else if (!_isWallJumpFastFalling) // 낙하 중이고 빠른 낙하가 아닌 경우
             {
-                Jump.VerticalVelocity += Controller.MoveStats.WallJumpGravity + Time.fixedDeltaTime;
+                Jump.VerticalVelocity += Controller.PlayerSO.WallJumpGravity + Time.fixedDeltaTime;
             }
             else if (Jump.VerticalVelocity < 0f) // 빠른 낙하 중이면 낙하 상태로 전환
             {
@@ -160,15 +160,15 @@ public class PlayerWallJump : MonoBehaviour
         // 빠른 낙하 상태일 때
         if (_isWallJumpFastFalling)
         {
-            if (_wallJumpFastFallTime >= Controller.MoveStats.TimeForUpwardsCancel)
+            if (_wallJumpFastFallTime >= Controller.PlayerSO.TimeForUpwardsCancel)
             {
                 // 낙하 중력이 증가된 비율로 적용됨
-                Jump.VerticalVelocity += Controller.MoveStats.WallJumpGravity * Controller.MoveStats.WallJumpGravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                Jump.VerticalVelocity += Controller.PlayerSO.WallJumpGravity * Controller.PlayerSO.WallJumpGravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
             else
             {
                 // 점프 버튼 뗀 후 남은 시간에 따라 부드럽게 감속
-                Jump.VerticalVelocity = Mathf.Lerp(_wallJumpFastFallReleaseSpeed, 0f, (_wallJumpFastFallTime / Controller.MoveStats.TimeForUpwardsCancel));
+                Jump.VerticalVelocity = Mathf.Lerp(_wallJumpFastFallReleaseSpeed, 0f, (_wallJumpFastFallTime / Controller.PlayerSO.TimeForUpwardsCancel));
             }
 
             _wallJumpFastFallTime += Time.fixedDeltaTime;
