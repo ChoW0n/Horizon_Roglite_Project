@@ -14,11 +14,13 @@ public class InputManager : MonoBehaviour
     public static bool JumpIsHeld;
     public static bool JumpWasReleased;
     public static bool RunIsHeld;
+    public static bool DashWaspPressed;
 
     // 입력 액션 참조용 변수
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _runAction;
+    private InputAction _dashAction;
     #endregion
 
     #region 초기화
@@ -31,6 +33,7 @@ public class InputManager : MonoBehaviour
         _moveAction = PlayerInput.actions["Move"];
         _jumpAction = PlayerInput.actions["Jump"];
         _runAction = PlayerInput.actions["Run"];
+        _dashAction = PlayerInput.actions["Dash"];
     }
     #endregion
 
@@ -47,6 +50,9 @@ public class InputManager : MonoBehaviour
 
         // 달리기 입력 체크
         RunIsHeld = _runAction.IsPressed();
+
+        // 대쉬 입력 체크
+        DashWaspPressed = _dashAction.WasPressedThisFrame();
     }
     #endregion
 }

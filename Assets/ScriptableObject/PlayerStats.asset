@@ -12,19 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e9cf5d71f64ec4daede22e040d0ba9, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  MaxWalkSpeed: 8
+  MoveThreshold: 0.25
+  MaxWalkSpeed: 9
+  MaxRunSpeed: 13
   GroundAcceleration: 5
   GroundDeceleration: 20
   AirAcceleration: 5
   AirDeceleration: 5
-  MaxRunSpeed: 13
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  GroundDetectionRayLenght: 0.02
-  HeadDetectionRayLenght: 0.02
-  HeadWidth: 0.75
-  JumpHeight: 6.5
+  WallJumpMoveAcceleration: 5
+  WallJumpMoveDeceleration: 5
+  JumpHeight: 4
   JumpHeightCompensationFactor: 1.054
   TimeTillJumpApex: 0.35
   GravityOnReleaseMultiplier: 2
@@ -35,11 +32,34 @@ MonoBehaviour:
   ApexHangTime: 0.075
   JumpBufferTime: 0.125
   JumpCoyoteTime: 0.1
-  DebugShowIsGroundedBox: 0
-  DebugShowHeadBumpBox: 0
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  GroundDetectionRayLenght: 0.02
+  HeadDetectionRayLenght: 0.02
+  WallDetectionRayLenght: 0.125
+  HeadWidth: 0.75
+  WallDetectionRayHeightMultiplier: 0.9
+  ResetJumpsOnWallSlide: 1
+  WallSlideSpeed: 5
+  WallSlideDecelerationSpeed: 50
+  WallJumpDirection: {x: -20, y: 6.5}
+  WallJumpPostBufferTime: 0.125
+  WallJumpGravityOnReleaseMultiplier: 1
+  DashTime: 0.11
+  DashSpeed: 40
+  TimeBtwDashesOnGround: 0.225
+  ResetDashOnWallSlide: 1
+  NumberOfDashes: 2
+  DashDiagonallyBias: 0.4
+  DashGravityOnReleaseMultiplier: 1
+  DashTimeForUpwardsCancel: 0.027
   ShowWalkJumpArc: 1
   ShowRunJumpArc: 0
   StopOnCollision: 1
-  DrawRight: 1
+  DrawRight: 0
   ArcResolution: 20
   VisualizationSteps: 90
+  DebugShowIsGroundedBox: 0
+  DebugShowHeadBumpBox: 0
+  DebujShowWallHiotbox: 0
