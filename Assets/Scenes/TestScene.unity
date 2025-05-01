@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2985afee4fe61a47b2c01cdf28897a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveStats: {fileID: 11400000, guid: 67074576ab4012c449d6a2b219b7ec13, type: 2}
+  PlayerSO: {fileID: 11400000, guid: 67074576ab4012c449d6a2b219b7ec13, type: 2}
   _feetColl: {fileID: 429835387}
   _bodyColl: {fileID: 1875177076}
   HorizontalVelocity: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
   m_LookaheadTime: 0.05
   m_LookaheadSmoothing: 1
   m_LookaheadIgnoreY: 1
-  m_XDamping: 0.75
+  m_XDamping: 0.4
   m_YDamping: 2
   m_ZDamping: 0
   m_TargetMovementOnly: 1
@@ -6748,6 +6748,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 278793211}
   flipYRotationTime: 0.5
+  lookUpOffset: 2
+  followSpeed: 5
 --- !u!1 &1807014026
 GameObject:
   m_ObjectHideFlags: 0

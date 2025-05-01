@@ -11,8 +11,15 @@ public class CameraFollowOBJ : MonoBehaviour
     [Header("Y축 회전 반전 설정")]
     [SerializeField] private float flipYRotationTime = 0.5f;
 
+    [Header("Look Up 설정")]
+    [SerializeField] private float lookUpOffset = 2f;         // 위로 이동할 정도
+    [SerializeField] private float followSpeed = 5f;          // 따라가는 속도
+
     private PlayerController player;
     private bool isFacingRight;
+
+    private Vector3 targetPosition;
+    private Vector3 currentOffset = Vector3.zero;
 
     #endregion
 
@@ -28,8 +35,17 @@ public class CameraFollowOBJ : MonoBehaviour
     #region 카메라 따라가기
     private void Update()
     {
-        // 플레이어 위치를 지속적으로 따라감
-        transform.position = playerTransform.position;
+        if (InputManager.Movement.x == 0 && InputManager.LookUpIsHeld)
+        {
+            currentOffset = Vector3.Lerp(currentOffset, new Vector3(0, lookUpOffset, 0), Time.deltaTime * followSpeed);
+        }
+        else
+        {
+            currentOffset = Vector3.Lerp(currentOffset, Vector3.zero, Time.deltaTime * followSpeed);
+        }
+
+        targetPosition = playerTransform.position + currentOffset;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * followSpeed);
     }
     #endregion
 

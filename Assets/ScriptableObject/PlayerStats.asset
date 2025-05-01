@@ -48,13 +48,13 @@ MonoBehaviour:
   WallJumpGravityOnReleaseMultiplier: 1
   DashTime: 0.11
   DashSpeed: 40
-  TimeBtwDashesOnGround: 0.225
+  TimeBtwDashesOnGround: 0.572
   ResetDashOnWallSlide: 1
   NumberOfDashes: 2
   DashDiagonallyBias: 0.4
   DashGravityOnReleaseMultiplier: 1
   DashTimeForUpwardsCancel: 0.027
-  ShowWalkJumpArc: 1
+  ShowWalkJumpArc: 0
   ShowRunJumpArc: 0
   StopOnCollision: 1
   DrawRight: 0
@@ -62,4 +62,4 @@ MonoBehaviour:
   VisualizationSteps: 90
   DebugShowIsGroundedBox: 0
   DebugShowHeadBumpBox: 0
-  DebujShowWallHiotbox: 0
+  DebugShowWallHitbox: 0
