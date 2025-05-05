@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerController : MonoBehaviour
 {
     #region References
     [Header("References")]
     public PlayerSO PlayerSO;
+    public Animator _animator;
     private PlayerWallSlide WallSlide;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private float _fallSpeedYDampingChangeThreshold;
 
     [Header("Coyote time Vars")]
-    public float _coyoteTimer;
+    [HideInInspector] public float _coyoteTimer;
 
     [Header("Collision Check Vars")]
     private RaycastHit2D _groundHit;
@@ -145,14 +145,24 @@ public class PlayerController : MonoBehaviour
 
                 float targetVelocity = 0f;
                 if (InputManager.RunIsHeld)
+                {
                     targetVelocity = moveInput.x * PlayerSO.MaxRunSpeed;
+                    _animator.SetBool("IsRunning", true);
+                    _animator.SetBool("IsWalking", false);
+                }
                 else
+                {
                     targetVelocity = moveInput.x * PlayerSO.MaxWalkSpeed;
+                    _animator.SetBool("IsRunning", false);
+                    _animator.SetBool("IsWalking", true);
+                }
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration + Time.fixedDeltaTime);
             }
             else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold)
             {
+                _animator.SetBool("IsRunning", false);
+                _animator.SetBool("IsWalking", false);
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0f, deceleration + Time.fixedDeltaTime);
             }
         }
