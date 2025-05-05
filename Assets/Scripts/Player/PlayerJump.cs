@@ -131,23 +131,6 @@ public class PlayerJump : MonoBehaviour
     {
         if (_isJumping)
         {
-            if (_isFastFalling)
-            {
-                if (!Controller._animator.GetBool("IsShortJumping"))
-                    Controller._animator.SetBool("IsShortJumping", true);
-
-                if (Controller._animator.GetBool("IsLongJumping"))
-                    Controller._animator.SetBool("IsLongJumping", false);
-            }
-            else
-            {
-                if (!Controller._animator.GetBool("IsLongJumping"))
-                    Controller._animator.SetBool("IsLongJumping", true);
-
-                if (Controller._animator.GetBool("IsShortJumping"))
-                    Controller._animator.SetBool("IsShortJumping", false);
-            }
-
             if (Controller._bumpedHead)
                 _isFastFalling = true;
 
@@ -200,15 +183,6 @@ public class PlayerJump : MonoBehaviour
                 VerticalVelocity = Mathf.Lerp(_fastFallReleaseSpeed, 0f, (_fastFallTime / Controller.PlayerSO.TimeForUpwardsCancel));
 
             _fastFallTime += Time.fixedDeltaTime;
-        }
-
-        if (!_isJumping)
-        {
-            if (Controller._animator.GetBool("IsShortJumping"))
-                Controller._animator.SetBool("IsShortJumping", false);
-
-            if (Controller._animator.GetBool("IsLongJumping"))
-                Controller._animator.SetBool("IsLongJumping", false);
         }
     }
 

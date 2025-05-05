@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     public PlayerSO PlayerSO;
     public Animator _animator;
+    public PlayerStateMachine PlayerStateMachine;
     private PlayerWallSlide WallSlide;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
@@ -135,7 +136,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 이동 처리 (걷기/달리기)
     /// </summary>
-    private void Move(float acceleration, float deceleration, Vector2 moveInput)
+    public void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
         if (!Dash._isDashing)
         {
@@ -147,22 +148,17 @@ public class PlayerController : MonoBehaviour
                 if (InputManager.RunIsHeld)
                 {
                     targetVelocity = moveInput.x * PlayerSO.MaxRunSpeed;
-                    _animator.SetBool("IsRunning", true);
-                    _animator.SetBool("IsWalking", false);
                 }
                 else
                 {
                     targetVelocity = moveInput.x * PlayerSO.MaxWalkSpeed;
-                    _animator.SetBool("IsRunning", false);
-                    _animator.SetBool("IsWalking", true);
                 }
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration + Time.fixedDeltaTime);
             }
             else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold)
             {
-                _animator.SetBool("IsRunning", false);
-                _animator.SetBool("IsWalking", false);
+
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0f, deceleration + Time.fixedDeltaTime);
             }
         }

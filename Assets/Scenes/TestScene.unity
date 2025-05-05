@@ -216,6 +216,8 @@ GameObject:
   - component: {fileID: 278793210}
   - component: {fileID: 278793212}
   - component: {fileID: 278793218}
+  - component: {fileID: 278793220}
+  - component: {fileID: 278793221}
   - component: {fileID: 278793213}
   - component: {fileID: 278793217}
   - component: {fileID: 278793216}
@@ -337,6 +339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerSO: {fileID: 11400000, guid: 67074576ab4012c449d6a2b219b7ec13, type: 2}
   _animator: {fileID: 278793218}
+  PlayerStateMachine: {fileID: 278793221}
   _feetColl: {fileID: 429835387}
   _bodyColl: {fileID: 1875177076}
   HorizontalVelocity: 0
@@ -433,6 +436,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &278793220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278793209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1db1b35476af5974b98573740861edf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 278793218}
+  stateMachine: {fileID: 278793221}
+--- !u!114 &278793221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278793209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f1c779c9bd3c8243b0fab16d27a13a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerController: {fileID: 278793213}
+  PlayerSO: {fileID: 11400000, guid: 67074576ab4012c449d6a2b219b7ec13, type: 2}
+  PlayerJump: {fileID: 278793217}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
