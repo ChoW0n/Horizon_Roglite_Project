@@ -231,6 +231,8 @@ public class PlayerJump : MonoBehaviour
 
             VerticalVelocity = Physics2D.gravity.y;
 
+            EffectManager.instance.PlayEffect("Land", this.gameObject.transform.position, Quaternion.identity);
+
             if (Dash._isDashFastFalling && Controller._isGrounded)
             {
                 Dash.ResetDashValues();

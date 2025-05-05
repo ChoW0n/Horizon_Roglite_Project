@@ -7099,12 +7099,33 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
         type: 3}
+      propertyPath: _effects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
+        type: 3}
+      propertyPath: _effects.Array.data[1]._name
+      value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
+        type: 3}
       propertyPath: _effects.Array.data[0]._poolSize
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
         type: 3}
+      propertyPath: _effects.Array.data[1]._effectPrefab
+      value: 
+      objectReference: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2,
+        type: 3}
+    - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
+        type: 3}
       propertyPath: _effects.Array.data[0]._initialPoolSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540039867004443392, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
+        type: 3}
+      propertyPath: _effects.Array.data[1]._initialPoolSize
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1860653923380887714, guid: fc4c2877aa7d2a54a873bdd0c8382b20,
