@@ -53,6 +53,7 @@ public class CameraManager : MonoBehaviour
         normalYPanAmount = framingTransposer.m_YDamping;
         startingTrackedObjOffset = framingTransposer.m_TrackedObjectOffset;
     }
+
     #endregion
 
     #region YDamping 보간 처리

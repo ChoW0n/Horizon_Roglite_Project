@@ -11,13 +11,13 @@ public class PlayerJump : MonoBehaviour
     private PlayerDash Dash;
 
     [Header("Jump Vars")]
-    public float VerticalVelocity;
-    public bool _isJumping;
-    public bool _isFastFalling;
-    public bool _isFalling;
-    public float _fastFallTime;
+    [HideInInspector] public float VerticalVelocity;
+    [HideInInspector] public bool _isJumping;
+    [HideInInspector] public bool _isFastFalling;
+    [HideInInspector] public bool _isFalling;
+    [HideInInspector] public float _fastFallTime;
+    [HideInInspector] public int _numberOfJumpsUsed;
     private float _fastFallReleaseSpeed;
-    public int _numberOfJumpsUsed;
 
     [Header("Apex Vars")]
     private float _apexPoint;
@@ -25,7 +25,7 @@ public class PlayerJump : MonoBehaviour
     private bool _isPastApexThreshold;
 
     [Header("Jump Buffer Vars")]
-    public float _jumpBufferTimer;
+    [HideInInspector] public float _jumpBufferTimer;
     private bool _jumpReleasedDuringBuffer;
 
     private void Start()

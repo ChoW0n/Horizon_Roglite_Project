@@ -11,13 +11,13 @@ public class PlayerDash : MonoBehaviour
     private PlayerJump Jump;
 
     [Header("Dash Vars")]
-    public bool _isDashing;
-    public bool _isAirDashing;
-    public float _dashTimer;
-    public float _dashOnGroundTimer;
+    [HideInInspector] public bool _isDashing;
+    [HideInInspector] public bool _isAirDashing;
+    [HideInInspector] public float _dashTimer;
+    [HideInInspector] public float _dashOnGroundTimer;
+    [HideInInspector] public bool _isDashFastFalling;
     private int _numberOfDashesUsed;
     private Vector2 _dashDirection;
-    public bool _isDashFastFalling;
     private float _dashFastFallTime;
     private float _dashFastFallReleaseSpeed;
 

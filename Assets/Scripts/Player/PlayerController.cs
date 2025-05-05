@@ -18,9 +18,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
 
-    // Movement Vars
     [Header("Movement Vars")]
-    public float HorizontalVelocity;
+    [HideInInspector] public float HorizontalVelocity;
     public bool _isFacingRight;
 
     [Header("Camera")]
@@ -35,10 +34,10 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
     private RaycastHit2D _wallHit;
-    public RaycastHit2D _lastWallHit;
-    public bool _isGrounded;
-    public bool _bumpedHead;
-    public bool _isTouchingWall;
+    [HideInInspector] public RaycastHit2D _lastWallHit;
+    [HideInInspector] public bool _isGrounded;
+    [HideInInspector] public bool _bumpedHead;
+    [HideInInspector] public bool _isTouchingWall;
 
     #endregion
 

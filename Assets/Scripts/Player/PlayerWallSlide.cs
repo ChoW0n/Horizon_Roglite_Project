@@ -11,8 +11,8 @@ public class PlayerWallSlide : MonoBehaviour
     private PlayerDash Dash;
 
     [Header("Wall Slide Vars")]
-    public bool _isWallSliding;
-    public bool _isWallSlideFalling;
+    [HideInInspector] public bool _isWallSliding;
+    [HideInInspector] public bool _isWallSlideFalling;
 
     private void Start()
     {

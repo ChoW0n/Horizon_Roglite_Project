@@ -10,14 +10,14 @@ public class PlayerWallJump : MonoBehaviour
     private PlayerWallSlide WallSlide;
 
     [Header("Wall Jump Vars")]
-    public bool _useWallJumpMoveState;
-    public bool _isWallJumping;
+    [HideInInspector] public bool _useWallJumpMoveState;
+    [HideInInspector] public bool _isWallJumping;
+    [HideInInspector] public bool _isWallJumpFalling;
+    [HideInInspector] public float _wallJumpPostBufferTimer;
     private float _wallJumpTime;
     private bool _isWallJumpFastFalling;
-    public bool _isWallJumpFalling;
     private float _wallJumpFastFallTime;
-    private float _wallJumpFastFallReleaseSpeed;
-    public float _wallJumpPostBufferTimer;
+    private float _wallJumpFastFallReleaseSpeed;   
     private float _walljumpApexPoint;
     private float _timePastWallJumpApexThreshold;
     private bool _isPastWallJumpApexThreshold;
