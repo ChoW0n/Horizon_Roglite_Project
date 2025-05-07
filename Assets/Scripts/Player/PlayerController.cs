@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
     #region References
     [Header("References")]
     public PlayerSO PlayerSO;
-    public Animator _animator;
-    public PlayerStateMachine PlayerStateMachine;
+    public AnimationManager AnimManager;
     private PlayerWallSlide WallSlide;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
@@ -148,10 +147,12 @@ public class PlayerController : MonoBehaviour
                 if (InputManager.RunIsHeld)
                 {
                     targetVelocity = moveInput.x * PlayerSO.MaxRunSpeed;
+                    AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Run);
                 }
                 else
                 {
                     targetVelocity = moveInput.x * PlayerSO.MaxWalkSpeed;
+                    AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Walk);
                 }
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration + Time.fixedDeltaTime);
@@ -160,6 +161,7 @@ public class PlayerController : MonoBehaviour
             {
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0f, deceleration + Time.fixedDeltaTime);
+                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Idle);
             }
         }
     }

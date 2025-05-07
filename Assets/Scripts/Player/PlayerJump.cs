@@ -87,6 +87,7 @@ public class PlayerJump : MonoBehaviour
         if (_jumpBufferTimer > 0f && !_isJumping && (Controller._isGrounded || Controller._coyoteTimer > 0f))
         {
             InitiateJump(1);
+            Debug.Log("짧은 점프");
 
             if (_jumpReleasedDuringBuffer)
             {
@@ -100,6 +101,7 @@ public class PlayerJump : MonoBehaviour
         {
             _isFastFalling = false;
             InitiateJump(1);
+            Debug.Log("다단 점프");
 
             if (Dash._isDashFastFalling)
                 Dash._isDashFastFalling = false;
@@ -115,8 +117,10 @@ public class PlayerJump : MonoBehaviour
     public void InitiateJump(int numberOfJumpsUsed)
     {
         if (!_isJumping)
+        {
             _isJumping = true;
-
+        }
+            
         WallJump.ResetWallJumpValues();
 
         _jumpBufferTimer = 0f;
@@ -138,11 +142,12 @@ public class PlayerJump : MonoBehaviour
             {
                 // 점프 중간 지점 도달 판단
                 _apexPoint = Mathf.InverseLerp(Controller.PlayerSO.InitialJumpVelocity, 0f, VerticalVelocity);
-
+                
                 if (_apexPoint > Controller.PlayerSO.ApexThreshold)
                 {
                     if (!_isPastApexThreshold)
                     {
+                        Debug.Log("긴 점프");
                         _isPastApexThreshold = true;
                         _timePastApexThreshold = 0f;
                     }

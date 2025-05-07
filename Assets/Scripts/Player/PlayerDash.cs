@@ -109,7 +109,7 @@ public class PlayerDash : MonoBehaviour
         _dashDirection = closestDirection;
         _numberOfDashesUsed++;
         _isDashing = true;
-        Controller._animator.SetBool("IsDashing", true);
+        Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Dash);
         EffectManager.instance.PlayEffect("Dash", this.gameObject.transform.position, Quaternion.identity);
         _dashTimer = 0f;
         _dashOnGroundTimer = Controller.PlayerSO.TimeBtwDashesOnGround;
@@ -137,7 +137,6 @@ public class PlayerDash : MonoBehaviour
 
                 _isAirDashing = false;
                 _isDashing = false;
-                Controller._animator.SetBool("IsDashing", false);
 
                 // 점프나 벽 점프 상태가 아니면 빠른 낙하 준비
                 if (!Jump._isJumping && !WallJump._isWallJumping)
