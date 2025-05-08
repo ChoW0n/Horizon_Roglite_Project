@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement Vars")]
     [HideInInspector] public float HorizontalVelocity;
-    public bool _isFacingRight;
+    [HideInInspector] public bool _isFacingRight;
 
     [Header("Camera")]
     public GameObject _cameraFollowGO;

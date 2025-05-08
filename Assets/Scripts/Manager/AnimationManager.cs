@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
+    public Animator animator;
 
     public int currentState;
 
@@ -14,7 +14,11 @@ public class AnimationManager : MonoBehaviour
         Walk = 1,
         Run = 2,
         Dash = 3,
-        Jump = 4
+        StartJump = 4,
+        Fall = 5,
+        EndJump = 6,
+        Jump = 7,
+        Land = 8
     }
 
     public void ChangeAnimationState(PlayerAnimationState newState)

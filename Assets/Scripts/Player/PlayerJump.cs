@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerJump : MonoBehaviour
 {
@@ -102,6 +103,7 @@ public class PlayerJump : MonoBehaviour
             _isFastFalling = false;
             InitiateJump(1);
             Debug.Log("다단 점프");
+            Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.StartJump);
 
             if (Dash._isDashFastFalling)
                 Dash._isDashFastFalling = false;
@@ -117,10 +119,10 @@ public class PlayerJump : MonoBehaviour
     public void InitiateJump(int numberOfJumpsUsed)
     {
         if (!_isJumping)
-        {
             _isJumping = true;
-        }
-            
+
+        Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.StartJump);
+
         WallJump.ResetWallJumpValues();
 
         _jumpBufferTimer = 0f;
@@ -147,7 +149,6 @@ public class PlayerJump : MonoBehaviour
                 {
                     if (!_isPastApexThreshold)
                     {
-                        Debug.Log("긴 점프");
                         _isPastApexThreshold = true;
                         _timePastApexThreshold = 0f;
                     }
@@ -172,10 +173,9 @@ public class PlayerJump : MonoBehaviour
             {
                 VerticalVelocity += Controller.PlayerSO.Gravity * Controller.PlayerSO.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
-            else if (VerticalVelocity < 0f)
+            else if (VerticalVelocity < 0f && !_isFalling)
             {
-                if (!_isFalling)
-                    _isFalling = true;
+                _isFalling = true;
             }
         }
 
@@ -211,6 +211,7 @@ public class PlayerJump : MonoBehaviour
             VerticalVelocity = Physics2D.gravity.y;
 
             EffectManager.instance.PlayEffect("Land", this.gameObject.transform.position, Quaternion.identity);
+            Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Land);
 
             if (Dash._isDashFastFalling && Controller._isGrounded)
             {
@@ -224,7 +225,6 @@ public class PlayerJump : MonoBehaviour
 
     public void Fall()
     {
-        // 점프가 아닌 단순 낙하
         if (!Controller._isGrounded && !_isJumping && !WallSlide._isWallSliding && !WallJump._isWallJumping && !Dash._isDashing && !Dash._isDashFastFalling)
         {
             if (!_isFalling)
