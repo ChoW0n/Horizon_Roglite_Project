@@ -73,12 +73,14 @@ public class PlayerJump : MonoBehaviour
                 {
                     _isPastApexThreshold = false;
                     _isFastFalling = true;
+                    Controller.AnimManager.animator.SetTrigger("Fall");
                     _fastFallTime = Controller.PlayerSO.TimeForUpwardsCancel;
                     VerticalVelocity = 0f;
                 }
                 else
                 {
                     _isFastFalling = true;
+                    Controller.AnimManager.animator.SetTrigger("Fall");
                     _fastFallReleaseSpeed = VerticalVelocity;
                 }
             }
@@ -93,6 +95,7 @@ public class PlayerJump : MonoBehaviour
             if (_jumpReleasedDuringBuffer)
             {
                 _isFastFalling = true;
+                Controller.AnimManager.animator.SetTrigger("Fall");
                 _fastFallReleaseSpeed = VerticalVelocity;
             }
         }
@@ -101,6 +104,7 @@ public class PlayerJump : MonoBehaviour
             && !Controller._isTouchingWall && _numberOfJumpsUsed < Controller.PlayerSO.NumberOfJumpsAllowed)
         {
             _isFastFalling = false;
+            Controller.AnimManager.animator.ResetTrigger("Fall");
             InitiateJump(1);
             Debug.Log("다단 점프");
             Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.StartJump);
@@ -113,6 +117,7 @@ public class PlayerJump : MonoBehaviour
         {
             InitiateJump(2);
             _isFastFalling = false;
+            Controller.AnimManager.animator.ResetTrigger("Fall");
         }
     }
 
@@ -212,6 +217,7 @@ public class PlayerJump : MonoBehaviour
 
             EffectManager.instance.PlayEffect("Land", this.gameObject.transform.position, Quaternion.identity);
             Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Land);
+            Controller.AnimManager.animator.ResetTrigger("Fall");
 
             if (Dash._isDashFastFalling && Controller._isGrounded)
             {
@@ -229,6 +235,8 @@ public class PlayerJump : MonoBehaviour
         {
             if (!_isFalling)
                 _isFalling = true;
+
+            Controller.AnimManager.animator.SetTrigger("Fall");
 
             VerticalVelocity += Controller.PlayerSO.Gravity * Time.fixedDeltaTime;
         }
