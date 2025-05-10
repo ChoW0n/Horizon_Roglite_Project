@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
     public static bool RunIsHeld;
     public static bool DashWaspPressed;
     public static bool LookUpIsHeld;
+    public static bool AttackWasPressed;
 
     // 입력 액션 참조용 변수
     private InputAction _moveAction;
@@ -23,6 +24,7 @@ public class InputManager : MonoBehaviour
     private InputAction _runAction;
     private InputAction _dashAction;
     private InputAction _lookUpAction;
+    private InputAction _attackAction;
     #endregion
 
     #region 초기화
@@ -37,6 +39,7 @@ public class InputManager : MonoBehaviour
         _runAction = PlayerInput.actions["Run"];
         _dashAction = PlayerInput.actions["Dash"];
         _lookUpAction = PlayerInput.actions["LookUp"];
+        _attackAction = PlayerInput.actions["Attack"];
     }
     #endregion
 
@@ -59,6 +62,9 @@ public class InputManager : MonoBehaviour
 
         // LookUp 입력 처리
         LookUpIsHeld = _lookUpAction.IsPressed();
+
+        // 공격 입력 처리
+        AttackWasPressed = _attackAction.WasPressedThisFrame();
     }
     #endregion
 }

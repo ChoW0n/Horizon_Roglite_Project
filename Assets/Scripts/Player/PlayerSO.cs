@@ -3,6 +3,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Player Movement")]
 public class PlayerSO : ScriptableObject
 {
+    // ---------------- 체력 ----------------
+    [Header("체력")]
+    [Range(0f, 100f)] public float MaxHp = 100f;
+
+    // ---------------- 공격 속도(범위) ----------------
+    [Header("공격 속도")]
+    [Range(0f, 50f)] public float damageAmount = 1f;
+    [Range(0f, 5f)] public float timeBtwAttacks = 0.15f;
+
     // ---------------- 이동 속도 ----------------
     [Header("이동 속도")]
     [Range(0f, 1f)] public float MoveThreshold = 0.25f;                     // 입력 감지 최소값 (이보다 작으면 이동 안 함)

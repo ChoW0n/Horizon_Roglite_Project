@@ -18,7 +18,8 @@ public class AnimationManager : MonoBehaviour
         Fall = 5,
         EndJump = 6,
         Jump = 7,
-        Land = 8
+        Land = 8,
+        Attack = 9
     }
 
     public void ChangeAnimationState(PlayerAnimationState newState)
