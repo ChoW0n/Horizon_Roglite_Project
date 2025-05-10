@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "LookDown",
+                    "type": "Button",
+                    "id": "b28a1251-59f6-4297-8f4c-ff0730d25cc1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Attack",
                     "type": "PassThrough",
                     "id": "4c12a578-ce79-459e-a3cc-0ab04aaea17e",
@@ -245,6 +254,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "LookUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7fca31f0-3fb3-43d5-bd43-6a72d973414b",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "LookDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

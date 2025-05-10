@@ -12,8 +12,8 @@ public class CameraFollowOBJ : MonoBehaviour
     [SerializeField] private float flipYRotationTime = 0.5f;
 
     [Header("Look Up 설정")]
-    [SerializeField] private float lookUpOffset = 2f;         // 위로 이동할 정도
-    [SerializeField] private float followSpeed = 5f;          // 따라가는 속도
+    [SerializeField] private float lookOffset = 3f;         // 위로 이동할 정도
+    [SerializeField] private float followSpeed = 5f;        // 따라가는 속도
 
     private PlayerController player;
     private bool isFacingRight;
@@ -37,7 +37,11 @@ public class CameraFollowOBJ : MonoBehaviour
     {
         if (InputManager.Movement.x == 0 && InputManager.LookUpIsHeld)
         {
-            currentOffset = Vector3.Lerp(currentOffset, new Vector3(0, lookUpOffset, 0), Time.deltaTime * followSpeed);
+            currentOffset = Vector3.Lerp(currentOffset, new Vector3(0, lookOffset, 0), Time.deltaTime * followSpeed);
+        }
+        else if (InputManager.Movement.x == 0 && InputManager.LookDownIsHeld)
+        {
+            currentOffset = Vector3.Lerp(currentOffset, new Vector3(0, -lookOffset, 0), Time.deltaTime * followSpeed);
         }
         else
         {

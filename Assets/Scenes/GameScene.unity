@@ -6873,8 +6873,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 278793211}
   flipYRotationTime: 0.5
-  lookUpOffset: 2
-  followSpeed: 5
+  lookOffset: 3
+  followSpeed: 25
+  returnSpeedMultiplier: 25
 --- !u!1 &1807014026
 GameObject:
   m_ObjectHideFlags: 0
