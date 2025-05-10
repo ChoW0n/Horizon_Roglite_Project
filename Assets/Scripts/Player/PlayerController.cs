@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    #region References
+    #region 레퍼런스
     [Header("References")]
     public PlayerSO PlayerSO;
     public AnimationManager AnimManager;
@@ -18,30 +18,30 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D _rb;
 
-    [Header("Movement Vars")]
-    [HideInInspector] public float HorizontalVelocity;
-    [HideInInspector] public bool _isFacingRight;
+    [Tooltip("Movement Vars")]
+    public Vector2 HorizontalVelocity { get; set; }
+    public bool _isFacingRight { get; private set; }
 
     [Header("Camera")]
     public GameObject _cameraFollowGO;
     private CameraFollowOBJ _cameraFollowOBJ;
     private float _fallSpeedYDampingChangeThreshold;
 
-    [Header("Coyote time Vars")]
-    [HideInInspector] public float _coyoteTimer;
+    [Tooltip("Coyote time Vars")]
+    public float _coyoteTimer { get; private set; }
 
     [Header("Collision Check Vars")]
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
     private RaycastHit2D _wallHit;
-    [HideInInspector] public RaycastHit2D _lastWallHit;
-    [HideInInspector] public bool _isGrounded;
-    [HideInInspector] public bool _bumpedHead;
-    [HideInInspector] public bool _isTouchingWall;
+    public RaycastHit2D _lastWallHit { get; private set; }
+    public bool _isGrounded { get; private set; }
+    public bool _bumpedHead { get; private set; }
+    public bool _isTouchingWall { get; private set; }
 
     #endregion
 
-    #region Unity CallBack Functions
+    #region 초기화
 
     private void Start()
     {
@@ -108,11 +108,11 @@ public class PlayerController : MonoBehaviour
     private void ApplyVelocity()
     {
         if (!Dash._isDashing)
-            Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, -PlayerSO.MaxFallSpeed, 50f);
+            Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, 0f - PlayerSO.MaxFallSpeed, 50f);
         else
             Jump.VerticalVelocity = Mathf.Clamp(Jump.VerticalVelocity, -50f, 50f);
 
-        _rb.velocity = new Vector2(HorizontalVelocity, Jump.VerticalVelocity);
+        _rb.velocity = new Vector2(HorizontalVelocity.x, Jump.VerticalVelocity);
     }
 
     private void OnDrawGizmos()
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Movement
+    #region 움직임
     /// <summary>
     /// 플레이어의 이동 처리 (걷기/달리기)
     /// </summary>
@@ -139,29 +139,32 @@ public class PlayerController : MonoBehaviour
     {
         if (!Dash._isDashing)
         {
-            if (Mathf.Abs(moveInput.x) >= PlayerSO.MoveThreshold)
+            if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold && InputManager.RunIsHeld)
+            {
+                HorizontalVelocity = Vector2.Lerp(HorizontalVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
+            }
+            else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold && !InputManager.RunIsHeld)
+            {
+                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Idle);
+
+                HorizontalVelocity = Vector2.Lerp(HorizontalVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
+            }
+            else if (Mathf.Abs(moveInput.x) >= PlayerSO.MoveThreshold)
             {
                 TurnCheck(moveInput);
-
-                float targetVelocity = 0f;
+                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Walk);
+                Vector2 zero = Vector2.zero;
                 if (InputManager.RunIsHeld)
                 {
-                    targetVelocity = moveInput.x * PlayerSO.MaxRunSpeed;
                     AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Run);
+                    zero = new Vector2(moveInput.x, 0f) * PlayerSO.MaxRunSpeed;
                 }
                 else
                 {
-                    targetVelocity = moveInput.x * PlayerSO.MaxWalkSpeed;
-                    AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Walk);
+                    zero = new Vector2(moveInput.x, 0f) * PlayerSO.MaxWalkSpeed;
                 }
 
-                HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration + Time.fixedDeltaTime);
-            }
-            else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold)
-            {
-
-                HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0f, deceleration + Time.fixedDeltaTime);
-                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Idle);
+                HorizontalVelocity = Vector2.Lerp(HorizontalVelocity, zero, acceleration * Time.fixedDeltaTime);
             }
         }
     }
@@ -204,7 +207,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Timers
+    #region 타이머
     /// <summary>
     /// 점프 버퍼 및 코요테 타이머 관리
     /// </summary>
@@ -228,7 +231,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Collision Checks
+    #region 콜리전 체크
     /// <summary>
     /// 바닥 판정 (BoxCast)
     /// </summary>

@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerWallSlide : MonoBehaviour
 {
+    #region 레퍼런스
     [Header("References")]
     private PlayerController Controller;
     private PlayerJump Jump;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
 
-    [Header("Wall Slide Vars")]
-    [HideInInspector] public bool _isWallSliding;
-    [HideInInspector] public bool _isWallSlideFalling;
+    [Tooltip("Wall Slide Vars")]
+    public bool _isWallSliding {  get; private set; }
+    public bool _isWallSlideFalling { get; set; }
 
+    #endregion
+
+    #region 초기화
     private void Start()
     {
         Controller = GetComponent<PlayerController>();
@@ -22,7 +26,9 @@ public class PlayerWallSlide : MonoBehaviour
         Dash = GetComponent<PlayerDash>();
     }
 
-    #region Wall Slide
+    #endregion
+
+    #region 벽 슬라이드
 
     // 벽 슬라이드 가능 여부 확인 및 상태 진입/종료 판단
     public void WallSlideCheck()

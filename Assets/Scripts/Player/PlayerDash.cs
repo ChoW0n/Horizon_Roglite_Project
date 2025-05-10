@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
 {
+    #region 레퍼런스
     [Header("References")]
     private PlayerController Controller;
     private PlayerWallSlide WallSlide;
@@ -11,15 +12,19 @@ public class PlayerDash : MonoBehaviour
     private PlayerJump Jump;
 
     [Header("Dash Vars")]
-    [HideInInspector] public bool _isDashing;
-    [HideInInspector] public bool _isAirDashing;
-    [HideInInspector] public float _dashTimer;
-    [HideInInspector] public float _dashOnGroundTimer;
-    [HideInInspector] public bool _isDashFastFalling;
     private int _numberOfDashesUsed;
     private Vector2 _dashDirection;
     private float _dashFastFallTime;
     private float _dashFastFallReleaseSpeed;
+    public bool _isDashing { get; private set; }
+    public bool _isAirDashing { get; private set; }
+    public float _dashTimer { get; private set; }
+    public float _dashOnGroundTimer { get; set; }
+    public bool _isDashFastFalling { get; set; }
+
+    #endregion
+
+    #region 초기화
 
     private void Start()
     {
@@ -29,7 +34,9 @@ public class PlayerDash : MonoBehaviour
         Jump = GetComponent<PlayerJump>();
     }
 
-    #region Dash
+    #endregion
+
+    #region 대쉬
 
     // 대쉬 입력 확인 및 조건에 따라 대쉬 시작
     public void DashCheck()
@@ -152,7 +159,8 @@ public class PlayerDash : MonoBehaviour
             }
 
             // 대쉬 방향에 따라 속도 적용
-            Controller.HorizontalVelocity = Controller.PlayerSO.DashSpeed * _dashDirection.x;
+            Controller.HorizontalVelocity = new Vector2(Controller.PlayerSO.DashSpeed * _dashDirection.x, 0f);
+
 
             if (_dashDirection.y != 0f || _isAirDashing)
                 Jump.VerticalVelocity = Controller.PlayerSO.DashSpeed * _dashDirection.y;

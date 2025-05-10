@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class PlayerWallJump : MonoBehaviour
 {
+    #region 레퍼런스
     [Header("References")]
     private PlayerController Controller;
     private PlayerJump Jump;
     private PlayerWallSlide WallSlide;
 
     [Header("Wall Jump Vars")]
-    [HideInInspector] public bool _useWallJumpMoveState;
-    [HideInInspector] public bool _isWallJumping;
-    [HideInInspector] public bool _isWallJumpFalling;
-    [HideInInspector] public float _wallJumpPostBufferTimer;
     private float _wallJumpTime;
     private bool _isWallJumpFastFalling;
     private float _wallJumpFastFallTime;
-    private float _wallJumpFastFallReleaseSpeed;   
+    private float _wallJumpFastFallReleaseSpeed;
     private float _walljumpApexPoint;
     private float _timePastWallJumpApexThreshold;
     private bool _isPastWallJumpApexThreshold;
+    public bool _useWallJumpMoveState {  get; private set; }
+    public bool _isWallJumping { get; private set; }
+    public bool _isWallJumpFalling { get; private set; }
+    public float _wallJumpPostBufferTimer { get; set; }
 
+    #endregion
+
+    #region 초기화
     private void Start()
     {
         Controller = GetComponent<PlayerController>();
@@ -29,7 +33,9 @@ public class PlayerWallJump : MonoBehaviour
         WallSlide = GetComponent<PlayerWallSlide>();
     }
 
-    #region Wall Jump
+    #endregion
+
+    #region 벽 점프
 
     // 벽 점프 조건 체크
     public void WallJumpCheck()
@@ -81,16 +87,9 @@ public class PlayerWallJump : MonoBehaviour
 
         Jump.VerticalVelocity = Controller.PlayerSO.InitialWallJumpVelocity; // 초기 수직 속도 설정
 
-        int dirMultiplier = 0;
-        Vector2 hitPoint = Controller._lastWallHit.collider.ClosestPoint(Controller._bodyColl.bounds.center);
-
-        // 플레이어 기준 벽 위치에 따라 반대 방향으로 점프
-        if (hitPoint.x > transform.position.x)
-            dirMultiplier = -1;
-        else
-            dirMultiplier = 1;
-
-        Controller.HorizontalVelocity = Mathf.Abs(Controller.PlayerSO.WallJumpDirection.x) * dirMultiplier;
+        int num = 0;
+        num = ((!(Controller._lastWallHit.collider.ClosestPoint(Controller._bodyColl.bounds.center).x > base.transform.position.x)) ? 1 : (-1));
+        Controller.HorizontalVelocity = new Vector2(Mathf.Abs(Controller.PlayerSO.WallJumpDirection.x) * (float)num, 0f);
     }
 
     // 벽 점프 도중 물리 처리

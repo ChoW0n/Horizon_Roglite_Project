@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerJump : MonoBehaviour
 {
+    #region 레퍼런스
     [Header("References")]
     private PlayerController Controller;
     private PlayerWallJump WallJump;
@@ -12,23 +12,27 @@ public class PlayerJump : MonoBehaviour
     private PlayerDash Dash;
 
     [Header("Jump Vars")]
-    [HideInInspector] public float VerticalVelocity;
-    [HideInInspector] public bool _isJumping;
-    [HideInInspector] public bool _isFastFalling;
-    [HideInInspector] public bool _isFalling;
-    [HideInInspector] public float _fastFallTime;
-    [HideInInspector] public int _numberOfJumpsUsed;
     private float _fastFallReleaseSpeed;
+    public int _numberOfJumpsUsed { get; set; }
+    public bool _isJumping { get; private set; }
+    public bool _isFastFalling { get; private set; }
+    public bool _isFalling { get; private set; }
+    public float _fastFallTime { get; private set; }
+    public float VerticalVelocity { get; set; }
+
 
     [Header("Apex Vars")]
     private float _apexPoint;
     private float _timePastApexThreshold;
     private bool _isPastApexThreshold;
 
-    [Header("Jump Buffer Vars")]
-    [HideInInspector] public float _jumpBufferTimer;
+    [Tooltip("Jump Buffer Vars")]
+    public float _jumpBufferTimer { get; set; }
     private bool _jumpReleasedDuringBuffer;
 
+    #endregion
+
+    #region 초기화
     private void Start()
     {
         Controller = GetComponent<PlayerController>();
@@ -37,7 +41,9 @@ public class PlayerJump : MonoBehaviour
         Dash = GetComponent<PlayerDash>();
     }
 
-    #region Jump
+    #endregion
+
+    #region 점프
     /// <summary>
     /// 점프 입력 처리 및 점프 상태 전이 관리
     /// </summary>
@@ -198,7 +204,7 @@ public class PlayerJump : MonoBehaviour
 
     #endregion
 
-    #region Land/Fall
+    #region 착지/낙하
 
     public void LandCheck()
     {
