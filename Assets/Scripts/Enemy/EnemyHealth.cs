@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     #region 레퍼런스
     [SerializeField] private float maxHealth = 3f;
+    [SerializeField] private ScreenShakeProfile profile;
 
     private float currentHealth;
+
+    private CinemachineImpulseSource impulseSource;
 
     #endregion
 
@@ -15,6 +19,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Start()
     {
         currentHealth = maxHealth;
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     #endregion
@@ -22,6 +27,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     #region 공격 관련
     public void Damage(float damageAmout)
     {
+        CameraShakeManager.instance.ScreenShakeFromProfile(profile, impulseSource);
+
         currentHealth -= damageAmout;
 
         if (currentHealth <= 0)
