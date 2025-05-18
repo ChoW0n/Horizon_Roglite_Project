@@ -59,6 +59,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 1393731921807324694}
     m_Position: {x: 240, y: 340, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 5040088307330745819}
+    m_Position: {x: 470, y: 280, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -137,8 +140,8 @@ MonoBehaviour:
   parameter: 0
   target: 1
   nextAnimations:
-  - animation: 8
-    lockLayer: 1
+  - animation: 9
+    lockLayer: 0
     crossfade: 0
 --- !u!1102 &-496830523978668982
 AnimatorState:
@@ -255,6 +258,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: d45634b604e8f894db504f521f9e9651, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &5040088307330745819
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: HIT
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 2c9a95cd74ebabf4b9d121e1d1256daf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

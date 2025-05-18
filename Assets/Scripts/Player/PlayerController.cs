@@ -67,6 +67,9 @@ public class PlayerController : AnimatorCoder
         WallSlide.WallSlideCheck();
         WallJump.WallJumpCheck();
         Dash.DashCheck();
+        DefaultAnimation(0);
+
+        CheckHit();
 
         // 카메라 Y Damping 조정 (낙하/점프 시 자연스러운 추적을 위한 보간)
         if (_rb.velocity.y < _fallSpeedYDampingChangeThreshold && !CameraManager.instance.isLerpingYDamping && !CameraManager.instance.lerpedFromPlayerFalling)
@@ -79,6 +82,15 @@ public class PlayerController : AnimatorCoder
             CameraManager.instance.lerpedFromPlayerFalling = false;
 
             CameraManager.instance.LerpYDamping(false);
+        }
+
+        // 테스트용 적 공격 구현하게되면 거기로 옮길예정
+        void CheckHit()
+        {
+            if (!Input.GetKeyDown(KeyCode.Q)) return;
+
+            SetLocked(false, 0);
+            Play(new(Animations.HIT, true, new()));
         }
     }
 

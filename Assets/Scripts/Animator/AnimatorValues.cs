@@ -7,10 +7,16 @@ namespace HRP.AnimatorCoder
         WALK,
         RUN,
         DASH,
+        DASH_Enhancement,
         ATTACK,
         JUMP,
         FALL,
         LAND,
+        HIT,
+        WALLJUMP,
+        WALLSLIDE,
+        DEAD,
+        RESPAWN,
         RESET
     }
 
