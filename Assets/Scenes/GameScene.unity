@@ -340,7 +340,7 @@ MonoBehaviour:
   _feetColl: {fileID: 429835387}
   _bodyColl: {fileID: 1875177076}
   _cameraFollowGO: {fileID: 1723847807}
-  Ground:
+  _ground:
     serializedVersion: 2
     m_Bits: 128
 --- !u!114 &278793214

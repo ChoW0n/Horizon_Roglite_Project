@@ -12,7 +12,6 @@ public class PlayerController : AnimatorCoder
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
     private PlayerJump Jump;
-    private PlayerAttack Attack;
 
     public Collider2D _feetColl;
     public Collider2D _bodyColl;
@@ -32,7 +31,7 @@ public class PlayerController : AnimatorCoder
     public float _coyoteTimer { get; private set; }
 
     [Header("Collision Check Vars")]
-    [SerializeField] private LayerMask Ground;
+    [SerializeField] private LayerMask _ground;
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
     private RaycastHit2D _wallHit;
@@ -55,7 +54,6 @@ public class PlayerController : AnimatorCoder
         WallJump = GetComponent<PlayerWallJump>();
         Dash = GetComponent<PlayerDash>();
         Jump = GetComponent<PlayerJump>();
-        Attack = GetComponent<PlayerAttack>();
 
         _fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
 
@@ -83,8 +81,6 @@ public class PlayerController : AnimatorCoder
 
             CameraManager.instance.LerpYDamping(false);
         }
-
-        Debug.Log($"_rb.velocity.y {_rb.velocity.y}");
     }
 
     private void FixedUpdate()
@@ -92,7 +88,7 @@ public class PlayerController : AnimatorCoder
         CollisionChecks();
 
         Jump.Jump();
-        SetBool(Parameters.GROUNDED, _feetColl.IsTouchingLayers(Ground));
+        SetBool(Parameters.GROUNDED, _feetColl.IsTouchingLayers(_ground));
         SetBool(Parameters.FALLING, !GetBool(Parameters.GROUNDED) && _rb.velocity.y < 0);
 
         Jump.Fall();
