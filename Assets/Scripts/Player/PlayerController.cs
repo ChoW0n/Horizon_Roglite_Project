@@ -31,7 +31,6 @@ public class PlayerController : AnimatorCoder
     public float _coyoteTimer { get; private set; }
 
     [Header("Collision Check Vars")]
-    [SerializeField] private LayerMask _ground;
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
     private RaycastHit2D _wallHit;
@@ -88,7 +87,7 @@ public class PlayerController : AnimatorCoder
         CollisionChecks();
 
         Jump.Jump();
-        SetBool(Parameters.GROUNDED, _feetColl.IsTouchingLayers(_ground));
+        SetBool(Parameters.GROUNDED, _feetColl.IsTouchingLayers(PlayerSO.GroundLayer));
         SetBool(Parameters.FALLING, !GetBool(Parameters.GROUNDED) && _rb.velocity.y < 0);
 
         Jump.Fall();
