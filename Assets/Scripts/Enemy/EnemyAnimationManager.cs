@@ -7,6 +7,7 @@ public class EnemyAnimationManager : MonoBehaviour
 
     // 애니메이션 파라미터 이름들을 상수로 정의
     private const string PARAM_IS_MOVING = "IsMoving";
+    private const string PARAM_IS_STRIKING = "IsStriking";
 
     void Update()
     {
@@ -29,6 +30,9 @@ public class EnemyAnimationManager : MonoBehaviour
                 case EnemyMoveState:
                     animator.SetBool(PARAM_IS_MOVING, true);
                     break;
+                case EnemyChaseState:
+                    animator.SetBool(PARAM_IS_STRIKING, true);
+                    break;
             }
         }
     }
@@ -37,5 +41,6 @@ public class EnemyAnimationManager : MonoBehaviour
     private void ResetAllBoolParameters()
     {
         animator.SetBool(PARAM_IS_MOVING, false);
+        animator.SetBool(PARAM_IS_STRIKING, false);
     }
 }

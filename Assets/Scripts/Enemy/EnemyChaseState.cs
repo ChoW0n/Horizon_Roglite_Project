@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyChaseState : EnemyState
 {
     public EnemyChaseState(EnemyStateMachine stateMachine) : base(stateMachine) { }
+
     public override void Update()
     {
         base.Update(); // 전이 체크 포함됨
@@ -30,6 +31,8 @@ public class EnemyChaseState : EnemyState
             Vector2 velocity = new Vector2(direction * enemy.MoveSpeed, enemy._rb.velocity.y);
             enemy._rb.velocity = velocity;
 
+            animationManager.animator.SetBool("IsFlying", true);
+
             // 방향 반영
             enemy.Flip();
         }
@@ -37,6 +40,9 @@ public class EnemyChaseState : EnemyState
         {
             // 추적 대상이 사라졌거나 범위를 벗어나면 Idle 또는 Patrol 상태로 복귀
             stateMachine.TransitionToState(new EnemyIdleState(stateMachine));
+            animationManager.animator.SetBool("IsFlying", false);
+            animationManager.animator.SetBool("IsStriking", false);
+
         }
     }
 }
