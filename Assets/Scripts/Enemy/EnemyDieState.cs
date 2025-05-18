@@ -2,17 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDieState : MonoBehaviour
+public class EnemyDieState : EnemyState
 {
-    // Start is called before the first frame update
-    void Start()
+    public EnemyDieState(EnemyStateMachine stateMachine) : base(stateMachine)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    }
+
+    protected override void CheckTransitions()
+    {
+        base.CheckTransitions();
     }
 }

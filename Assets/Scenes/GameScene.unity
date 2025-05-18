@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 415284947}
   - component: {fileID: 415284951}
   m_Layer: 8
-  m_Name: Test_Enemy
+  m_Name: Strike_Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -993,7 +993,7 @@ Animator:
   m_GameObject: {fileID: 415284946}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fddcdca1bd976714f89070b202642147, type: 2}
+  m_Controller: {fileID: 9100000, guid: ae02a72e210575f4886f62ddf81c5041, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -7,14 +7,12 @@ public abstract class EnemyState
 {
     protected EnemyStateMachine stateMachine;     
     protected Enemy enemy;     
-    protected EnemyAnimationManager animationManager;  
 
     // 생성자 : 상태 머신과 플레이어 컨트롤러 참조 초기화
     public EnemyState(EnemyStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
         this.enemy = stateMachine._enemy;
-        this.animationManager = stateMachine.GetComponent<EnemyAnimationManager>();
     }
 
     // 가상 메서드들 : 하위 클래스에서 필요에 따라 오버라이드
@@ -27,11 +25,8 @@ public abstract class EnemyState
     public virtual void FixedUpdate() { }       // 고정 시간 간격으로 호출 (물리 연산용)
 
     // 상태 전호나 조건을 체크하는 메서드
-    protected void CheckTransitions()
+    protected virtual void CheckTransitions() 
     {
-        if (enemy.IsPlayerInStrikingDistance())
-        {
-            stateMachine.TransitionToState(new EnemyChaseState(stateMachine));
-        }
+
     }
 }

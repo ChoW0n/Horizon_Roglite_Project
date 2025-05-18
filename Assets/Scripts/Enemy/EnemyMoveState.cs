@@ -1,3 +1,4 @@
+using HRP.AnimatorCoder;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class EnemyMoveState : EnemyState
         Vector2 start = enemy.startPosition;
         leftLimit = start.x - range;
         rightLimit = start.x + range;
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        enemy.Play(new (Animations.ENEMY_WALK));
     }
 
     public override void Update()

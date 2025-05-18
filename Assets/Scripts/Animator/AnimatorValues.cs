@@ -3,6 +3,7 @@ namespace HRP.AnimatorCoder
     // 애니메이션 상태 이름
     public enum Animations
     {
+        // 플레이어 관련
         IDLE,
         WALK,
         RUN,
@@ -19,6 +20,13 @@ namespace HRP.AnimatorCoder
         WALLSLIDE,
         DEAD,
         RESPAWN,
+        // 적 관련
+        ENEMY_IDLE,
+        ENEMY_WALK,
+        ENEMY_STRIKE,
+        ENEMY_FLY,
+        ENEMY_HURT,
+        ENEMY_DEAD,
         RESET
     }
 
@@ -26,6 +34,7 @@ namespace HRP.AnimatorCoder
     public enum Parameters
     {
         GROUNDED,
-        FALLING
+        FALLING,
+        STRIKING
     }
 }

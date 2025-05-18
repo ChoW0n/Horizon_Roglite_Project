@@ -1,9 +1,10 @@
+using Cinemachine;
+using HRP.AnimatorCoder;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : AnimatorCoder, IDamageable
 {
     #region 레퍼런스
     [SerializeField] private ScreenShakeSO profile;
@@ -27,7 +28,7 @@ public class Enemy : MonoBehaviour, IDamageable
     #endregion
 
     #region 어그로 State
-    [SerializeField] private float strikingDistance = 5f;
+    public float strikingDistance = 5f;
     [SerializeField] private Transform playerTransform; 
     [SerializeField] private LayerMask playerLayer;
 
@@ -46,7 +47,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
         impulseSource = GetComponent<CinemachineImpulseSource>();
         _rb = GetComponent<Rigidbody2D>();
+
+        Initialize();
     }
+
+    public override void DefaultAnimation(int layer) { }
 
     #endregion
 
