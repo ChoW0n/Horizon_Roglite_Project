@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 278793210}
   - component: {fileID: 278793212}
   - component: {fileID: 278793218}
-  - component: {fileID: 278793219}
   - component: {fileID: 278793213}
   - component: {fileID: 278793217}
   - component: {fileID: 278793216}
@@ -338,10 +337,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSO: {fileID: 11400000, guid: 67074576ab4012c449d6a2b219b7ec13, type: 2}
-  AnimManager: {fileID: 278793219}
   _feetColl: {fileID: 429835387}
   _bodyColl: {fileID: 1875177076}
   _cameraFollowGO: {fileID: 1723847807}
+  Ground:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &278793214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -400,7 +401,7 @@ Animator:
   m_GameObject: {fileID: 278793209}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 625f208df2a19844d86ba70f1d77dc22, type: 2}
+  m_Controller: {fileID: 9100000, guid: 170a0e83bf33dc7408167474f63d6a52, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -411,20 +412,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &278793219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 278793209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bfb641746d1c5e43ac279beb33bca84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 278793218}
-  currentState: 0
 --- !u!114 &278793220
 MonoBehaviour:
   m_ObjectHideFlags: 0

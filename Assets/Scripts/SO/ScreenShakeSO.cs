@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScreenShake/New Profile")]
-public class ScreenShakeProfile : ScriptableObject
+[CreateAssetMenu(menuName = "ScreenShakeSO/New ScreenShakeSO")]
+public class ScreenShakeSO : ScriptableObject
 {
     [Header("¼¼ÆÃ")]
     public float impactTime = 0.2f;

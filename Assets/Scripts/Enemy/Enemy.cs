@@ -6,7 +6,7 @@ using Cinemachine;
 public class Enemy : MonoBehaviour, IDamageable
 {
     #region 레퍼런스
-    [SerializeField] private ScreenShakeProfile profile;
+    [SerializeField] private ScreenShakeSO profile;
     private CinemachineImpulseSource impulseSource;
     public Rigidbody2D _rb { get; private set; }
 

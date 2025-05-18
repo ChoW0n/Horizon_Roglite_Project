@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using HRP.AnimatorCoder;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : AnimatorCoder
 {
     #region 레퍼런스
     [Header("References")]
     public PlayerSO PlayerSO;
-    public AnimationManager AnimManager;
     private PlayerWallSlide WallSlide;
     private PlayerWallJump WallJump;
     private PlayerDash Dash;
     private PlayerJump Jump;
+    private PlayerAttack Attack;
 
     public Collider2D _feetColl;
     public Collider2D _bodyColl;
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public float _coyoteTimer { get; private set; }
 
     [Header("Collision Check Vars")]
+    [SerializeField] private LayerMask Ground;
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
     private RaycastHit2D _wallHit;
@@ -53,8 +55,11 @@ public class PlayerController : MonoBehaviour
         WallJump = GetComponent<PlayerWallJump>();
         Dash = GetComponent<PlayerDash>();
         Jump = GetComponent<PlayerJump>();
+        Attack = GetComponent<PlayerAttack>();
 
         _fallSpeedYDampingChangeThreshold = CameraManager.instance.fallSpeedYDampingChangeThreshold;
+
+        Initialize();
     }
 
     private void Update()
@@ -78,12 +83,18 @@ public class PlayerController : MonoBehaviour
 
             CameraManager.instance.LerpYDamping(false);
         }
+
+        Debug.Log($"_rb.velocity.y {_rb.velocity.y}");
     }
 
     private void FixedUpdate()
     {
         CollisionChecks();
+
         Jump.Jump();
+        SetBool(Parameters.GROUNDED, _feetColl.IsTouchingLayers(Ground));
+        SetBool(Parameters.FALLING, !GetBool(Parameters.GROUNDED) && _rb.velocity.y < 0);
+
         Jump.Fall();
         WallSlide.WallSlide();
         WallJump.WallJump();
@@ -115,6 +126,8 @@ public class PlayerController : MonoBehaviour
         _rb.velocity = new Vector2(HorizontalVelocity.x, Jump.VerticalVelocity);
     }
 
+    public override void DefaultAnimation(int layer) { }
+
     private void OnDrawGizmos()
     {
         PlayerSO.DrawRight = _isFacingRight;
@@ -145,22 +158,21 @@ public class PlayerController : MonoBehaviour
             }
             else if (Mathf.Abs(moveInput.x) < PlayerSO.MoveThreshold && !InputManager.RunIsHeld)
             {
-                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Idle);
-
+                Play(new(Animations.IDLE));
                 HorizontalVelocity = Vector2.Lerp(HorizontalVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
             }
             else if (Mathf.Abs(moveInput.x) >= PlayerSO.MoveThreshold)
             {
                 TurnCheck(moveInput);
-                AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Walk);
                 Vector2 zero = Vector2.zero;
                 if (InputManager.RunIsHeld)
                 {
-                    AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Run);
+                    Play(new(Animations.RUN));
                     zero = new Vector2(moveInput.x, 0f) * PlayerSO.MaxRunSpeed;
                 }
                 else
                 {
+                    Play(new(Animations.WALK));
                     zero = new Vector2(moveInput.x, 0f) * PlayerSO.MaxWalkSpeed;
                 }
 

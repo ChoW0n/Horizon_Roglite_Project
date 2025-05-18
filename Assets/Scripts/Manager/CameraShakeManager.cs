@@ -39,7 +39,7 @@ public class CameraShakeManager : MonoBehaviour
     /// <summary>
     /// 프로필 설정 기반으로 카메라 흔들림 발생
     /// </summary>
-    public void ScreenShakeFromProfile(ScreenShakeProfile profile, CinemachineImpulseSource impulseSource)
+    public void ScreenShakeFromProfile(ScreenShakeSO profile, CinemachineImpulseSource impulseSource)
     {
         SetupScreenShakeSettings(profile, impulseSource);               // 프로필 설정 적용
         impulseSource.GenerateImpulseWithForce(profile.impactForce);    // 지정된 세기로 흔들림 발생
@@ -48,7 +48,7 @@ public class CameraShakeManager : MonoBehaviour
     /// <summary>
     /// 스크린 흔들림에 사용할 임펄스 설정을 프로필 기반으로 구성
     /// </summary>
-    public void SetupScreenShakeSettings(ScreenShakeProfile profile, CinemachineImpulseSource impulseSource)
+    public void SetupScreenShakeSettings(ScreenShakeSO profile, CinemachineImpulseSource impulseSource)
     {
         impulseDefinition = impulseSource.m_ImpulseDefinition;
 

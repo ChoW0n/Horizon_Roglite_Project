@@ -1,3 +1,4 @@
+using HRP.AnimatorCoder;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,6 @@ public class PlayerJump : MonoBehaviour
     public bool _isFalling { get; private set; }
     public float _fastFallTime { get; private set; }
     public float VerticalVelocity { get; set; }
-
 
     [Header("Apex Vars")]
     private float _apexPoint;
@@ -79,14 +79,12 @@ public class PlayerJump : MonoBehaviour
                 {
                     _isPastApexThreshold = false;
                     _isFastFalling = true;
-                    Controller.AnimManager.animator.SetTrigger("Fall");
                     _fastFallTime = Controller.PlayerSO.TimeForUpwardsCancel;
                     VerticalVelocity = 0f;
                 }
                 else
                 {
                     _isFastFalling = true;
-                    Controller.AnimManager.animator.SetTrigger("Fall");
                     _fastFallReleaseSpeed = VerticalVelocity;
                 }
             }
@@ -96,12 +94,10 @@ public class PlayerJump : MonoBehaviour
         if (_jumpBufferTimer > 0f && !_isJumping && (Controller._isGrounded || Controller._coyoteTimer > 0f))
         {
             InitiateJump(1);
-            Debug.Log("짧은 점프");
 
             if (_jumpReleasedDuringBuffer)
             {
                 _isFastFalling = true;
-                Controller.AnimManager.animator.SetTrigger("Fall");
                 _fastFallReleaseSpeed = VerticalVelocity;
             }
         }
@@ -110,10 +106,7 @@ public class PlayerJump : MonoBehaviour
             && !Controller._isTouchingWall && _numberOfJumpsUsed < Controller.PlayerSO.NumberOfJumpsAllowed)
         {
             _isFastFalling = false;
-            Controller.AnimManager.animator.ResetTrigger("Fall");
             InitiateJump(1);
-            Debug.Log("다단 점프");
-            Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.StartJump);
 
             if (Dash._isDashFastFalling)
                 Dash._isDashFastFalling = false;
@@ -123,7 +116,6 @@ public class PlayerJump : MonoBehaviour
         {
             InitiateJump(2);
             _isFastFalling = false;
-            Controller.AnimManager.animator.ResetTrigger("Fall");
         }
     }
 
@@ -132,7 +124,7 @@ public class PlayerJump : MonoBehaviour
         if (!_isJumping)
             _isJumping = true;
 
-        Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.StartJump);
+        Controller.Play(new(Animations.JUMP, true));
 
         WallJump.ResetWallJumpValues();
 
@@ -221,9 +213,8 @@ public class PlayerJump : MonoBehaviour
 
             VerticalVelocity = Physics2D.gravity.y;
 
+            Controller.Play(new(Animations.LAND, true));
             EffectManager.instance.PlayEffect("Land", this.gameObject.transform.position, Quaternion.identity);
-            Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Land);
-            Controller.AnimManager.animator.ResetTrigger("Fall");
 
             if (Dash._isDashFastFalling && Controller._isGrounded)
             {
@@ -241,8 +232,6 @@ public class PlayerJump : MonoBehaviour
         {
             if (!_isFalling)
                 _isFalling = true;
-
-            Controller.AnimManager.animator.SetTrigger("Fall");
 
             VerticalVelocity += Controller.PlayerSO.Gravity * Time.fixedDeltaTime;
         }

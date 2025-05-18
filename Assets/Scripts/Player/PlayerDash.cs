@@ -1,6 +1,8 @@
+using HRP.AnimatorCoder;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerDash : MonoBehaviour
 {
@@ -116,7 +118,7 @@ public class PlayerDash : MonoBehaviour
         _dashDirection = closestDirection;
         _numberOfDashesUsed++;
         _isDashing = true;
-        Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Dash);
+        Controller.Play(new(Animations.DASH));
         EffectManager.instance.PlayEffect("Dash", this.gameObject.transform.position, Quaternion.identity);
         _dashTimer = 0f;
         _dashOnGroundTimer = Controller.PlayerSO.TimeBtwDashesOnGround;

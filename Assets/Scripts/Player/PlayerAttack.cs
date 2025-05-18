@@ -1,3 +1,4 @@
+using HRP.AnimatorCoder;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ public class PlayerAttack : MonoBehaviour
         {
             _attackTimeCounter = 0f;
 
-            Controller.AnimManager.ChangeAnimationState(AnimationManager.PlayerAnimationState.Attack);
+            Controller.Play(new(Animations.ATTACK, true, new(Animations.IDLE)));
             EffectManager.instance.PlayEffect("Attack", attackTranform.position, Quaternion.identity);
         }
 
