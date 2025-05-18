@@ -9,6 +9,8 @@ namespace HRP.AnimatorCoder
         DASH,
         DASH_Enhancement,
         ATTACK,
+        DOWN_ATTACK,
+        UP_ATTACK,
         JUMP,
         FALL,
         LAND,

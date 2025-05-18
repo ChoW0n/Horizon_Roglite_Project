@@ -65,6 +65,7 @@ public class PlayerAttack : MonoBehaviour
             if (InputManager.LookUpIsHeld)
             {
                 direction = AttackDirection.Up;
+                Controller.Play(new(Animations.UP_ATTACK, true, new(Animations.IDLE)));
             }
             else if (InputManager.LookDownIsHeld)
             {
@@ -72,6 +73,7 @@ public class PlayerAttack : MonoBehaviour
                     return;
 
                 direction = AttackDirection.Down;
+                Controller.Play(new(Animations.DOWN_ATTACK, true, new(Animations.IDLE)));
             }
 
             Controller.Play(new(Animations.ATTACK, true, new(Animations.IDLE)));
