@@ -22,10 +22,15 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform upAttackTransform;
     [SerializeField] private Transform downAttackTransform;
 
+    [SerializeField] private Transform normalAttackHitboxTransform;
+    [SerializeField] private Transform upAttackHitboxTransform;
+    [SerializeField] private Transform downAttackHitboxTransform;
+
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private float attackRange = 1.5f;
 
     private Dictionary<AttackDirection, Transform> attackTransformMap;
+    private Dictionary<AttackDirection, Transform> hitboxTransformMap;
 
     // 패링 시스템 들어가면 필요한 Bool값
     public bool ShouldBeDamageing { get; private set; } = false;
@@ -45,6 +50,13 @@ public class PlayerAttack : MonoBehaviour
             { AttackDirection.Up, upAttackTransform },
             { AttackDirection.Down, downAttackTransform }
         };
+
+        hitboxTransformMap = new()
+    {
+        { AttackDirection.Normal, normalAttackHitboxTransform },
+        { AttackDirection.Up, upAttackHitboxTransform },
+        { AttackDirection.Down, downAttackHitboxTransform }
+    };
     }
 
     void Start()
@@ -82,7 +94,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 AttackDirection.Up => "UpAttack",
                 AttackDirection.Down => "DownAttack",
-                _ => "Attack"
+                AttackDirection.Normal => Controller._isFacingRight ? "RightAttack" : "LeftAttack"
             };
 
             EffectManager.instance.PlayEffect(effectName, attackTransformMap[direction].position, Quaternion.identity);
@@ -99,7 +111,7 @@ public class PlayerAttack : MonoBehaviour
     #region 공격
     public void Attack(AttackDirection direction)
     {
-        Transform atkTf = attackTransformMap[direction]; // 또는 배열 접근
+        Transform atkTf = hitboxTransformMap[direction]; // 또는 배열 접근
         _hits = Physics2D.CircleCastAll(atkTf.position, attackRange, Vector2.zero, 0f, enemyLayer);
 
         foreach (var hit in _hits)
@@ -117,16 +129,16 @@ public class PlayerAttack : MonoBehaviour
     #region 기즈모
     private void OnDrawGizmosSelected()
     {
-        if (normalAttackTransform != null)
-            Gizmos.DrawWireSphere(normalAttackTransform.position, attackRange);
+        if (normalAttackHitboxTransform != null)
+            Gizmos.DrawWireSphere(normalAttackHitboxTransform.position, attackRange);
 
-        if (upAttackTransform != null)
+        if (upAttackHitboxTransform != null)
             Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(upAttackTransform.position, attackRange);
+        Gizmos.DrawWireSphere(upAttackHitboxTransform.position, attackRange);
 
-        if (downAttackTransform != null)
+        if (downAttackHitboxTransform != null)
             Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(downAttackTransform.position, attackRange);
+        Gizmos.DrawWireSphere(downAttackHitboxTransform.position, attackRange);
     }
 
     #endregion
